@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBConnect.Model
+namespace DBTelegraph.Model
 {
     public class Table
     {
@@ -20,10 +20,10 @@ namespace DBConnect.Model
         }
 
         private List<Register> _registers;
-        
+
         public List<Column> Columns { get; set; }
 
-        
+
 
         public Table(string name, params Column[] columns)
         {
@@ -38,14 +38,14 @@ namespace DBConnect.Model
         {
             get => _registers[index];
         }
-        
+
         public void AddRegister(IDictionary<string, object> data)
         {
             Register r;
-            if(_registers.Count == 0)
+            if (_registers.Count == 0)
             {
                 r = new Register();
-                foreach(var c in Columns)
+                foreach (var c in Columns)
                 {
                     (r as dynamic)[c.Name] = null;
                 }
@@ -56,7 +56,7 @@ namespace DBConnect.Model
                 r = new(_registers[0]);
             }
 
-            foreach(var d in data)
+            foreach (var d in data)
             {
                 (r as dynamic)[d.Key] = d.Value;
             }

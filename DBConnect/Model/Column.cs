@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBConnect.Model
+namespace DBTelegraph.Model
 {
 
     public enum Constraints
@@ -14,7 +14,7 @@ namespace DBConnect.Model
 
     public class Column
     {
-        
+
         public string Name { get; set; }
 
         public List<Constraints> Constraints { get; set; }

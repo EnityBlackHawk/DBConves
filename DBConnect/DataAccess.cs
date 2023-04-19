@@ -1,5 +1,6 @@
 ﻿using Dapper;
-using DBConnect.Model;
+using DBTelegraph.Annotations;
+using DBTelegraph.Model;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
@@ -8,13 +9,13 @@ using System.Security.Principal;
 using System.Text;
 using static Dapper.SqlMapper;
 
-namespace DBConnect
+namespace DBTelegraph
 {
     public class DataAccess
     {
-        public List<T> GetAll<T>(T entity) where T : Model.ModelBase
+        public List<T> GetAll<T>(T entity) where T : ModelBase
         {
-            using (IDbConnection conn = new System.Data.SqlClient.SqlConnection(ConfigClass.ConnectionString))
+            using (IDbConnection conn = new SqlConnection(ConfigClass.ConnectionString))
             {
                 return conn.Query<T>($"SELECT * FROM {entity.tableName()}").ToList();
             }
@@ -22,11 +23,11 @@ namespace DBConnect
 
         public void GetAll(Table table, Database database)
         {
-            using (IDbConnection conn = new System.Data.SqlClient.SqlConnection(ConfigClass.GetConnectionStringForDataBase(database)))
+            using (IDbConnection conn = new SqlConnection(ConfigClass.GetConnectionStringForDataBase(database)))
             {
                 var c = conn.Query($"SELECT * FROM {table.Name}");
                 Console.WriteLine("Done query");
-                foreach(var r in c)
+                foreach (var r in c)
                 {
                     var d = (IDictionary<string, object>)r;
                     table.AddRegister(d);
@@ -34,17 +35,17 @@ namespace DBConnect
             }
         }
 
-        public void Insert<T>(T entity) where T : Model.ModelBase
+        public void Insert<T>(T entity) where T : ModelBase
         {
-            using (IDbConnection conn = new System.Data.SqlClient.SqlConnection(ConfigClass.ConnectionString))
+            using (IDbConnection conn = new SqlConnection(ConfigClass.ConnectionString))
             {
                 string e = entity.ToString();
                 conn.Query($"INSERT INTO {entity.tableName()}{entity.GetColumnsName()} VALUES {e}");
             }
         }
-        public void Insert<T>(T entity, string dataBaseName) where T : Model.ModelBase
+        public void Insert<T>(T entity, string dataBaseName) where T : ModelBase
         {
-            using (IDbConnection conn = new System.Data.SqlClient.SqlConnection(ConfigClass.GetConnectionStringForDataBase(dataBaseName)))
+            using (IDbConnection conn = new SqlConnection(ConfigClass.GetConnectionStringForDataBase(dataBaseName)))
             {
                 string e = entity.ToString();
                 conn.Query($"INSERT INTO {entity.tableName()}{entity.GetColumnsName()} VALUES {e}");
@@ -54,25 +55,25 @@ namespace DBConnect
 
         public void CreateTable(Type type)
         {
-            using (IDbConnection conn = new System.Data.SqlClient.SqlConnection(ConfigClass.ConnectionString))
+            using (IDbConnection conn = new SqlConnection(ConfigClass.ConnectionString))
             {
                 StringBuilder sb = new StringBuilder($"Create table {type.Name} (\n");
                 var props = type.GetProperties();
-                List<String> pks = new List<String>();
-                foreach ( var prop in props )
+                List<string> pks = new List<string>();
+                foreach (var prop in props)
                 {
-                    if (prop.GetCustomAttribute(typeof(Annotations.IdAttribute)) != null)
+                    if (prop.GetCustomAttribute(typeof(IdAttribute)) != null)
                     {
                         pks.Add(prop.Name);
                     }
-                    
+
                     sb.AppendLine($"\t {prop.Name} {TypeTable.getSQLType(prop.PropertyType)},");
                 }
                 sb.Append("\t PRIMARY KEY(");
-                for(int i = 0; i < pks.Count; i++)
+                for (int i = 0; i < pks.Count; i++)
                 {
                     sb.Append(pks[i]);
-                    if(i < pks.Count - 1)
+                    if (i < pks.Count - 1)
                         sb.Append(", ");
                 }
                 sb.Append("));");
@@ -80,15 +81,15 @@ namespace DBConnect
             }
         }
 
-        public void CreateTable(Model.Table table)
+        public void CreateTable(Table table)
         {
-            using (IDbConnection conn = new System.Data.SqlClient.SqlConnection(ConfigClass.ConnectionString))
+            using (IDbConnection conn = new SqlConnection(ConfigClass.ConnectionString))
             {
                 StringBuilder sb = new StringBuilder($"Create table {table.Name} (\n");
-                List<String> pks = new List<String>();
+                List<string> pks = new List<string>();
                 foreach (var c in table.Columns)
                 {
-                    if (c.Constraints.Contains(Model.Constraints.PRIMARY_KEY))
+                    if (c.Constraints.Contains(Constraints.PRIMARY_KEY))
                         pks.Add(c.Name);
 
                     sb.AppendLine($"\t {c.Name} {TypeTable.getSQLType(c)},");
@@ -105,15 +106,15 @@ namespace DBConnect
             }
         }
 
-        public void CreateTable(Model.Table table, Database dataBase)
+        public void CreateTable(Table table, Database dataBase)
         {
-            using (IDbConnection conn = new System.Data.SqlClient.SqlConnection(ConfigClass.GetConnectionStringForDataBase(dataBase)))
+            using (IDbConnection conn = new SqlConnection(ConfigClass.GetConnectionStringForDataBase(dataBase)))
             {
                 StringBuilder sb = new StringBuilder($"Create table {table.Name} (\n");
-                List<String> pks = new List<String>();
+                List<string> pks = new List<string>();
                 foreach (var c in table.Columns)
                 {
-                    if (c.Constraints.Contains(Model.Constraints.PRIMARY_KEY))
+                    if (c.Constraints.Contains(Constraints.PRIMARY_KEY))
                         pks.Add(c.Name);
 
                     sb.AppendLine($"\t {c.Name} {TypeTable.getSQLType(c)},");
@@ -134,7 +135,7 @@ namespace DBConnect
 
         public void CreateDatabase(Database database)
         {
-            using (IDbConnection conn = new System.Data.SqlClient.SqlConnection(ConfigClass.ConnectionString))
+            using (IDbConnection conn = new SqlConnection(ConfigClass.ConnectionString))
             {
                 conn.Query("CREATE DATABASE " + database);
             }
@@ -142,11 +143,12 @@ namespace DBConnect
 
         public void DropDatabase(Database database)
         {
-            using IDbConnection cnn = new System.Data.SqlClient.SqlConnection(ConfigClass.ConnectionString);
+            using IDbConnection cnn = new SqlConnection(ConfigClass.ConnectionString);
             try
             {
                 cnn.Query("DROP DATABASE " + database);
-            }catch (SqlException ex)
+            }
+            catch (SqlException ex)
             {
                 Console.WriteLine(ex.Message);
             }

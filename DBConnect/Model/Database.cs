@@ -5,12 +5,12 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBConnect.Model
+namespace DBTelegraph.Model
 {
     public class Database
     {
-        public string Name { get;}
-        public List<Table> Tables { get;}
+        public string Name { get; }
+        public List<Table> Tables { get; }
 
         public Database(string name, params Table[] tables)
         {
@@ -18,7 +18,7 @@ namespace DBConnect.Model
             Tables = new(tables);
         }
 
-        public static implicit operator String(Database db) => db.Name;
+        public static implicit operator string(Database db) => db.Name;
 
         public override string ToString() => Name;
     }

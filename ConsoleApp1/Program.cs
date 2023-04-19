@@ -1,4 +1,5 @@
-﻿using DBConnect.Model;
+﻿using DBTelegraph;
+using DBTelegraph.Model;
 using System;
 using System.Net.Http.Headers;
 
@@ -8,7 +9,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            DBConnect.DataAccess dataAccess = new DBConnect.DataAccess();
+            DataAccess dataAccess = new DBTelegraph.DataAccess();
             Table table = new Table(
                 "customer",
                 new Column("id", typeof(int), Constraints.PRIMARY_KEY),
@@ -20,7 +21,7 @@ namespace ConsoleApp1
             Database db = new("db_test");
             dataAccess.GetAll(table, db);
 
-            Console.WriteLine(table[1]["name"]);
+            DateTime t = table[1]["birth"];
 
         }
     }

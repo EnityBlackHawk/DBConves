@@ -5,11 +5,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBConnect
+namespace DBTelegraph
 {
     internal static class TypeTable
     {
-        private static Dictionary<Type, String> Types { get; } = new Dictionary<Type, String>
+        private static Dictionary<Type, string> Types { get; } = new Dictionary<Type, string>
         {
             {typeof(int), "int"},
             {typeof(float), "float" },
@@ -18,7 +18,7 @@ namespace DBConnect
         };
 
         public static string getSQLType(Type type)
-        { 
+        {
             return Types[type];
         }
 

@@ -7,9 +7,9 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBConnect.Model
+namespace DBTelegraph.Model
 {
-    public class Register: DynamicObject
+    public class Register : DynamicObject
     {
 
         private Dictionary<string, object?> _data = new();
@@ -17,12 +17,12 @@ namespace DBConnect.Model
 
         public Register()
         {
-            
+
         }
 
         public Register(Register register)
         {
-            foreach(string c in register.ColumnsName())
+            foreach (string c in register.ColumnsName())
             {
                 _data.Add(c, null);
             }
@@ -32,12 +32,12 @@ namespace DBConnect.Model
         public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object? value)
         {
             string key = (string)indexes[0];
-            if(_data.ContainsKey(key))
+            if (_data.ContainsKey(key))
             {
                 _data[key] = value;
                 return true;
             }
-            else if(!isClosed && !_data.ContainsKey(key))
+            else if (!isClosed && !_data.ContainsKey(key))
             {
                 _data.Add(key, value);
                 return true;

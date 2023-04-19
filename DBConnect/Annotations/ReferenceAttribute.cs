@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBConnect.Annotations
+namespace DBTelegraph.Annotations
 {
     [AttributeUsage(AttributeTargets.Property)]
     internal class ReferenceAttribute : Attribute

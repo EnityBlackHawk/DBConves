@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBConnect.Model
+namespace DBTelegraph.Model
 {
     public abstract class ModelBase
     {
@@ -12,13 +12,13 @@ namespace DBConnect.Model
 
         public override string ToString()
         {
-            var props = this.GetType().GetProperties();
+            var props = GetType().GetProperties();
             var sb = new StringBuilder();
             sb.Append("( ");
-            foreach ( var p in props )
+            foreach (var p in props)
             {
                 sb.Append(p.GetValue(this));
-                if(p != props[props.Length -1])
+                if (p != props[props.Length - 1])
                     sb.Append(", ");
             }
             sb.Append(" )");
@@ -27,7 +27,7 @@ namespace DBConnect.Model
 
         public virtual string GetColumnsName()
         {
-            var props = this.GetType().GetProperties();
+            var props = GetType().GetProperties();
             var sb = new StringBuilder();
             sb.Append("( ");
             foreach (var p in props)
