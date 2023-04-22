@@ -18,6 +18,8 @@ namespace DBTelegraph.Model
             Tables = new(tables);
         }
 
+        public void AddTable(Table table) => Tables.Add(table);
+
         public static implicit operator string(Database db) => db.Name;
 
         public override string ToString() => Name;

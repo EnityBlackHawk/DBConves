@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,5 +55,35 @@ namespace DBTelegraph.Model
         }
 
         public void Close() => isClosed = true;
+
+
+        public override string ToString()
+        {
+            var sf = new StringBuilder("( ");
+            foreach (object? c in _data.Values)
+            {
+                string? insertData;
+                try
+                {
+                    Convert.ToDouble(c);
+                    insertData = c.ToString();
+                }
+                catch (Exception)
+                {
+                    if(c.GetType() == typeof(DateTime))
+                    {
+                        insertData = "'" + ((DateTime)c).ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                    }
+                    else insertData = "'" + c.ToString() + "'";
+                }
+                
+                
+                sf.Append(insertData);
+                if (c != _data.Values.Last()) sf.Append(", ");
+            }
+            sf.Append(')');
+            return sf.ToString();
+
+        }
     }
 }

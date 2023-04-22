@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBTelegraph.Annotations
+namespace DBTelegraph.Model
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    internal class ReferenceAttribute : Attribute
+    public enum SGBD
     {
+        SQL_SERVER = 0,
+        POSTGRESS = 1
     }
 }

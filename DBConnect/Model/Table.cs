@@ -23,8 +23,6 @@ namespace DBTelegraph.Model
 
         public List<Column> Columns { get; set; }
 
-
-
         public Table(string name, params Column[] columns)
         {
             Name = name;
@@ -64,5 +62,25 @@ namespace DBTelegraph.Model
             _registers.Add(r);
         }
 
+        public IEnumerable<string> GetColumnsName()
+        {
+            List<string> names = new List<string>();
+            foreach (var c in Columns)
+                names.Add(c.Name);
+            return names;
+        }
+
+        public string GetColumnsNameToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder("(");
+            var names = GetColumnsName();
+            foreach (var c in names)
+            {
+                stringBuilder.Append(c);
+                if(c != names.Last()) stringBuilder.Append(", ");
+            }
+            stringBuilder.Append(")");
+            return stringBuilder.ToString();
+        }
     }
 }
