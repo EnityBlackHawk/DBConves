@@ -20,6 +20,8 @@ namespace DBRudder.ViewModel
                 new Model.Table {Id = 0, Name = "Table 1", columns = new ObservableCollection<Column>{ new Column{Name = " Column 1", Type = "float"}} },
                 new Model.Table {Id = 1, Name = "Table 2", columns = new ObservableCollection<Column>{ new Column{Name = " Column 1", Type = "float"}} }
             };
+
+
         }
     }
 }

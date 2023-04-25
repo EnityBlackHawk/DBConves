@@ -7,8 +7,17 @@ using System.Threading.Tasks;
 
 namespace DBTelegraph
 {
-    internal static class TypeTable
+    public static class TypeTable
     {
+
+        public static List<string> SupportedTypes { get; } = new List<string>
+        {
+            "Int32",
+            "Float",
+            "String",
+            "DateTime"
+        };
+
         private static Dictionary<Type, string> Types { get; } = new Dictionary<Type, string>
         {
             {typeof(int), "int"},

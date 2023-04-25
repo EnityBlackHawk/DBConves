@@ -36,7 +36,7 @@
             
             <TextBlock Text="Nome:" Grid.Column="0" Margin="0 0 10 0" Style="{StaticResource TextblockDef}"/>
             <TextBox VerticalAlignment="Center" Grid.Column="1" MinWidth="500" />
-            <Button Content="Adicionar tabela" Grid.Column="2" VerticalAlignment="Center"/>
+            <Button Content="Adicionar tabela" Grid.Column="2" VerticalAlignment="Center" Click="AddTable"/>
         </Grid>
         <!-- Row 2 -->
         <TextBlock Text="Tabelas: " Grid.Row="2" Style="{StaticResource TextblockDef}"/>
@@ -46,40 +46,41 @@
                   SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="Model:Table">
-                    <Border>
-                        <Expander VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
-                            <Expander.Header>
-                                <Grid Padding="10 20 10 20" RowSpacing="10">
+                    
+                    <Expander VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0, 0, 0, 5">
+                        <Expander.Header>
+                            <Grid Padding="10 20 10 20" RowSpacing="10">
 
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
                                     
-                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TextblockDef}" FontWeight="Bold" Grid.Column="0"/>
-                                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
-                                        <TextBlock Text="Colunas: " Style="{StaticResource TextblockDef}" Margin="0, 0, 10, 0"/>
-                                        <TextBlock Text="{Binding columns.Count}" Style="{StaticResource TextblockDef}" FontWeight="Medium"/>
-                                    </StackPanel>
-                                    <Button Content="Adicionar Coluna" Tag="{Binding Id}" Click="Button_Click" Grid.Column="3"/>
-                                </Grid>
-                            </Expander.Header>
-                            <Expander.Content>
-                                <ListView SelectionMode="None" ItemsSource="{Binding columns}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                                <TextBox Text="{Binding Name}" Style="{StaticResource TextblockDef}" Margin="0 0 20 0"
-                                                         Width="300"/>
-                                                <TextBlock Text="{Binding Type}" Style="{StaticResource TextblockDef}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </Expander.Content>
-                        </Expander>
-                    </Border>
+                                <TextBox Text="{Binding Name}" FontWeight="Bold" Grid.Column="0"/>
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
+                                    <TextBlock Text="Colunas: " Style="{StaticResource TextblockDef}" Margin="0, 0, 10, 0"/>
+                                    <TextBlock Text="{Binding columns.Count}" Style="{StaticResource TextblockDef}" FontWeight="Medium"/>
+                                </StackPanel>
+                                <Button Content="Adicionar Coluna" Tag="{Binding Id}" Click="Button_Click" Grid.Column="3"/>
+                            </Grid>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <ListView SelectionMode="None" ItemsSource="{Binding columns}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <TextBox Text="{Binding Name}" Style="{StaticResource TextblockDef}" Margin="0 0 20 0"
+                                                        Width="300"/>
+                                            <ComboBox SelectedItem="{Binding Type}"
+                                                      ItemsSource="{Binding GetSupportedTypes}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Expander.Content>
+                    </Expander>
+                    
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

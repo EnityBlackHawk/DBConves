@@ -3,6 +3,7 @@
     x:Class="DBRudder.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="using:DBRudder.Converters"
     xmlns:local="using:DBRudder">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,6 +13,7 @@
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <Converter:TypeToStringConverter x:Key="TypeToStringConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

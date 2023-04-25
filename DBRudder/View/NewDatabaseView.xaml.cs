@@ -36,5 +36,10 @@ namespace DBRudder.View
             int tag = (int)(sender as Button).Tag;
             ViewModel.Tables[tag].columns.Add(new Model.Column { Name = "Column 1", Type = "String"});
         }
+
+        private void AddTable(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Tables.Add(new Model.Table { Id = ViewModel.Tables.Count, Name = "Nova tabela", columns = new() });
+        }
     }
 }
