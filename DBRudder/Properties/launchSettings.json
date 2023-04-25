@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DBRudder (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "DBRudder (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

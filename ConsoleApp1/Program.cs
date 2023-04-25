@@ -39,7 +39,9 @@ namespace ConsoleApp1
             dataAccess.CreateDatabase(db);
             dataAccess.CreateTable(table, db);
             dataAccess.Insert(table, db, new List<Register> { r1, r2 });
-            dataAccess.DropDatabase(db);
+
+            Console.WriteLine();
+            //dataAccess.DropDatabase(db);
 
         }
     }

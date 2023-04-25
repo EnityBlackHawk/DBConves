@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using DBTelegraph.Annotations;
 using DBTelegraph.Model;
 using System.Data;
 using System.Data.SqlClient;
@@ -56,10 +55,7 @@ namespace DBTelegraph
                 Console.WriteLine(e.Message);
                 throw e;
             }
-
-
         }
-
 
         public void CreateTable(Table table, Database dataBase)
         {
