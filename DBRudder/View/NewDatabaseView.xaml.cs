@@ -41,5 +41,11 @@ namespace DBRudder.View
         {
             ViewModel.Tables.Add(new Model.Table { Id = ViewModel.Tables.Count, Name = "Nova tabela", columns = new() });
         }
+
+        private void RemoveTable(object sender, RoutedEventArgs e)
+        {
+            int tag = (int)((sender as Button).Tag);
+            ViewModel.Tables.RemoveAt(tag);
+        }
     }
 }

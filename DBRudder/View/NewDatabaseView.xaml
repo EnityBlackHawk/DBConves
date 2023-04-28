@@ -16,6 +16,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -35,45 +36,56 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock Text="Nome:" Grid.Column="0" Margin="0 0 10 0" Style="{StaticResource TextblockDef}"/>
-            <TextBox VerticalAlignment="Center" Grid.Column="1" MinWidth="500" />
+            <TextBox Text="{x:Bind ViewModel.DatabaseName, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" MinWidth="500" />
             <Button Content="Adicionar tabela" Grid.Column="2" VerticalAlignment="Center" Click="AddTable"/>
         </Grid>
         <!-- Row 2 -->
         <TextBlock Text="Tabelas: " Grid.Row="2" Style="{StaticResource TextblockDef}"/>
         
         <!-- Row 3 -->
+        <!-- Tables -->
         <ListView Grid.Row="3" Grid.ColumnSpan="2" CornerRadius="5" ItemsSource="{x:Bind ViewModel.Tables}"
                   SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="Model:Table">
                     
-                    <Expander VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="0, 0, 0, 5">
+                    <Expander VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                              HorizontalContentAlignment="Left" Margin="0, 0, 0, 5"
+                              IsExpanded="True">
                         <Expander.Header>
-                            <Grid Padding="10 20 10 20" RowSpacing="10">
+                            <Grid Padding="10 20 10 20" ColumnSpacing="10">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                    
-                                <TextBox Text="{Binding Name}" FontWeight="Bold" Grid.Column="0"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Nome: " Style="{StaticResource TextblockDef}" Margin="0, 0, 5, 0"/>
+                                    <TextBox Text="{Binding Name, Mode=TwoWay}" FontWeight="Bold" Grid.Column="0"/>
+                                </StackPanel>
+                                
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="1">
                                     <TextBlock Text="Colunas: " Style="{StaticResource TextblockDef}" Margin="0, 0, 10, 0"/>
                                     <TextBlock Text="{Binding columns.Count}" Style="{StaticResource TextblockDef}" FontWeight="Medium"/>
                                 </StackPanel>
-                                <Button Content="Adicionar Coluna" Tag="{Binding Id}" Click="Button_Click" Grid.Column="3"/>
+                                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                    <Button Content="Remover Tabela" Tag="{Binding Id}"   Click="RemoveTable" Margin="0, 0, 10, 0"/>
+                                    <Button Content="Adicionar Coluna" Tag="{Binding Id}" Click="Button_Click"/>
+                                </StackPanel>
                             </Grid>
                         </Expander.Header>
                         <Expander.Content>
+                            <!-- Columns -->
                             <ListView SelectionMode="None" ItemsSource="{Binding columns}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                            <TextBox Text="{Binding Name}" Style="{StaticResource TextblockDef}" Margin="0 0 20 0"
+                                            <TextBox Text="{Binding Name, Mode=TwoWay}" Style="{StaticResource TextblockDef}" Margin="0, 0, 20, 0"
                                                         Width="300"/>
-                                            <ComboBox SelectedItem="{Binding Type}"
-                                                      ItemsSource="{Binding GetSupportedTypes}"/>
+                                            <ComboBox SelectedItem="{Binding Type, Mode=TwoWay}" Width="300"
+                                                      ItemsSource="{Binding GetSupportedTypes}" Margin="0, 0, 20, 0"/>
+                                            <CheckBox Content="Primary key" Margin="0, 0, 20, 0" IsChecked="{Binding IsPrimaryKey, Mode=TwoWay}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -84,6 +96,15 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
+        <!-- Row 4 -->
+        <Grid Grid.Row="4" Grid.ColumnSpan="2"  VerticalAlignment="Center" Margin="5" ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <InfoBar IsOpen="{x:Bind ViewModel.IsDone, Mode=TwoWay}" Severity="{x:Bind ViewModel.StatusResult, Mode=OneWay, Converter={StaticResource StringToInfoBarSeverityConverter}}"
+                     Title="{x:Bind ViewModel.StatusResult, Mode=OneWay}" Message="{x:Bind ViewModel.Status, Mode=OneWay}"/>
+            <Button Grid.Column="1" Content="Salvar Database" Command="{x:Bind ViewModel.CreateDatabaseCommand}"/>
+        </Grid>
     </Grid>
 </Page>

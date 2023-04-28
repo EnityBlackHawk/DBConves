@@ -1,4 +1,5 @@
 ﻿using DBRudder.Model;
+using DBTelegraph;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tools;
+using Windows.Devices.AllJoyn;
 
 namespace DBRudder.ViewModel
 {
@@ -13,15 +15,73 @@ namespace DBRudder.ViewModel
     {
         public ObservableCollection<Model.Table> Tables { get; }
 
+        private string _databaseName;
+
+        public string DatabaseName
+        {
+            get { return _databaseName; }
+            set { _databaseName = value.Replace(" ", "_"); OnPropertyChanged(); }
+        }
+
+        public ButtonCommand CreateDatabaseCommand { get; set; }
+
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; OnPropertyChanged(); }
+        }
+
+        private bool _isDone;
+
+        public bool IsDone
+        {
+            get { return _isDone; }
+            set { _isDone = value; OnPropertyChanged(); }
+        }
+
+        private string _statusResult;
+        public string StatusResult
+        {
+            get => _statusResult;
+            set { _statusResult = value; OnPropertyChanged(); }
+        }
+
+        private string _status;
+        public string Status
+        {
+            get => _status;
+            set { _status = value; OnPropertyChanged(); }
+        }
+
         public NewDatabaseViewModel()
         {
-            Tables = new ObservableCollection<Model.Table>
-            {
-                new Model.Table {Id = 0, Name = "Table 1", columns = new ObservableCollection<Column>{ new Column{Name = " Column 1", Type = "float"}} },
-                new Model.Table {Id = 1, Name = "Table 2", columns = new ObservableCollection<Column>{ new Column{Name = " Column 1", Type = "float"}} }
-            };
-
-
+            Tables = new ObservableCollection<Model.Table>();
+            CreateDatabaseCommand = new ButtonCommand(CreateDatabase);
         }
+
+        public async void CreateDatabase()
+        {
+            Database ui_db = new Database(DatabaseName, Tables.ToList());
+
+            var config = new DBTelegraph.ConfigClass(
+                "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;",
+                DBTelegraph.Model.SGBD.SQL_SERVER,
+                DatabaseName
+                );
+            var acc = new DataAccess( config );
+
+            var task = acc.CreateDatabaseAndTablesAsync(ui_db);
+            var result = await task;
+            if(task.IsCompleted)
+            {
+                
+                Status = result.Status;
+                StatusResult = result.StatusResult;
+                IsDone = true;
+            }
+        }
+
     }
 }

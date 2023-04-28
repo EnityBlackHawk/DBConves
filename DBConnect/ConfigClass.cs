@@ -2,11 +2,22 @@
 
 namespace DBTelegraph
 {
-    public static class ConfigClass
+    public class ConfigClass
     {
-        public static string ConnectionString { get; } = "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;";
-        public static SGBD SGBD { get; } = SGBD.SQL_SERVER;
-        public static string ProviderName { get; } = "System.Data.SqlClient";
-        public static string GetConnectionStringForDataBase(string dataBaseName) => ConnectionString + $"Database={dataBaseName};";
+        public string ConnectionString { get; } = "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;";
+        public SGBD SGBD { get; } = SGBD.SQL_SERVER;
+        public string ProviderName { get; } = "System.Data.SqlClient";
+        
+        public string DatabaseName { get; } 
+
+        public string GetConnectionStringForDataBase() => ConnectionString + $"Database={DatabaseName};";
+
+
+        public ConfigClass(string connectionString, SGBD sgdb, string databaseName)
+        {
+            ConnectionString = connectionString;
+            SGBD = sgdb;
+            DatabaseName = databaseName;
+        }
     }
 }

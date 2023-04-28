@@ -18,6 +18,14 @@ namespace DBTelegraph
             "DateTime"
         };
 
+        private static Dictionary<string, Type> _stringToType = new Dictionary<string, Type>
+        {
+            { "Int32", typeof(int)},
+            {"Float", typeof(float)},
+            {"String", typeof(string) },
+            {"DateTime", typeof(DateTime)}
+        };
+
         private static Dictionary<Type, string> Types { get; } = new Dictionary<Type, string>
         {
             {typeof(int), "int"},
@@ -31,5 +39,7 @@ namespace DBTelegraph
             return Types[type];
         }
 
+        public static Type GetTypeOfString(string typeName) => _stringToType[typeName];
+        
     }
 }

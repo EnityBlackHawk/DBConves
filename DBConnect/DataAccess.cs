@@ -10,12 +10,32 @@ using static Dapper.SqlMapper;
 
 namespace DBTelegraph
 {
+    public readonly struct Result
+    {
+        public string Status { get; }
+        public string StatusResult { get; }
+        public Result(string status, string statusResult)
+        {
+            Status = status;
+            StatusResult = statusResult;
+        }
+    }
+
+
     public class DataAccess
     {
 
+        private ConfigClass _config;
+
+        public DataAccess(ConfigClass config)
+        {
+            _config = config;
+        }
+
+
         public void GetAll(Table table, Database database)
         {
-            using (IDbConnection conn = new SqlConnection(ConfigClass.GetConnectionStringForDataBase(database)))
+            using (IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase()))
             {
                 var c = conn.Query($"SELECT * FROM {table.Name}");
                 Console.WriteLine("Done query");
@@ -37,7 +57,7 @@ namespace DBTelegraph
                     throw new Exception($"Register column does not match with the table's columns: {except.ElementAt(0)}");
             }
 
-            using IDbConnection conn = new SqlConnection(ConfigClass.GetConnectionStringForDataBase(database));
+            using IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase());
 
             string sql = $"INSERT INTO {table.Name}{table.GetColumnsNameToString()} VALUES ";
             foreach(var r in registers)
@@ -57,9 +77,9 @@ namespace DBTelegraph
             }
         }
 
-        public void CreateTable(Table table, Database dataBase)
+        public void CreateTable(Table table, Database? dataBase = null)
         {
-            using (IDbConnection conn = new SqlConnection(ConfigClass.GetConnectionStringForDataBase(dataBase)))
+            using (IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase()))
             {
                 StringBuilder sb = new StringBuilder($"Create table {table.Name} (\n");
                 List<string> pks = new List<string>();
@@ -80,23 +100,44 @@ namespace DBTelegraph
                 sb.Append("));");
                 conn.Query(sb.ToString());
 
-                dataBase.AddTable(table);
+                dataBase?.AddTable(table);
             }
         }
-
         public void CreateDatabase(Database database)
         {
-            using (IDbConnection conn = new SqlConnection(ConfigClass.ConnectionString))
+            using (IDbConnection conn = new SqlConnection(_config.ConnectionString))
             {
                 conn.Query("CREATE DATABASE " + database);
             }
         }
 
+
+        public Task<Result> CreateDatabaseAndTablesAsync(Database dataBase)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    CreateDatabase(dataBase);
+                    foreach (var table in dataBase.Tables)
+                    {
+                        CreateTable(table);
+                    }
+                    return new Result("Done", "Success");
+                }
+                catch (Exception ex)
+                {
+                    return new Result(ex.Message, "Error");
+                }
+                
+            });
+        }
+
         public void DropDatabase(Database database)
         {
-            using IDbConnection cnn = new SqlConnection(ConfigClass.ConnectionString);
+            using IDbConnection cnn = new SqlConnection(_config.ConnectionString);
             
-            if(ConfigClass.SGBD == SGBD.SQL_SERVER)
+            if(_config.SGBD == SGBD.SQL_SERVER)
                 cnn.Query($"alter database {database} set single_user with rollback immediate");
 
             try
