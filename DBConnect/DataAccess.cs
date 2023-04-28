@@ -133,6 +133,23 @@ namespace DBTelegraph
             });
         }
 
+        public Result CreateDatabaseAndTables(Database dataBase)
+        {
+            try
+            {
+                CreateDatabase(dataBase);
+                foreach (var table in dataBase.Tables)
+                {
+                    CreateTable(table);
+                }
+                return new Result("Done", "Success");
+            }
+            catch (Exception ex)
+            {
+                return new Result(ex.Message, "Error");
+            }
+        }
+
         public void DropDatabase(Database database)
         {
             using IDbConnection cnn = new SqlConnection(_config.ConnectionString);
