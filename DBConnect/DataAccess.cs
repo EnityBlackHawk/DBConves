@@ -35,7 +35,7 @@ namespace DBTelegraph
 
         public void GetAll(Table table, Database database)
         {
-            using (IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase()))
+            using (IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase(database)))
             {
                 var c = conn.Query($"SELECT * FROM {table.Name}");
                 Console.WriteLine("Done query");
@@ -57,7 +57,7 @@ namespace DBTelegraph
                     throw new Exception($"Register column does not match with the table's columns: {except.ElementAt(0)}");
             }
 
-            using IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase());
+            using IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase(database));
 
             string sql = $"INSERT INTO {table.Name}{table.GetColumnsNameToString()} VALUES ";
             foreach(var r in registers)
@@ -77,9 +77,9 @@ namespace DBTelegraph
             }
         }
 
-        public void CreateTable(Table table, Database? dataBase = null)
+        public void CreateTable(Table table, Database dataBase)
         {
-            using (IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase()))
+            using (IDbConnection conn = new SqlConnection(_config.GetConnectionStringForDataBase(dataBase)))
             {
                 StringBuilder sb = new StringBuilder($"Create table {table.Name} (\n");
                 List<string> pks = new List<string>();
@@ -99,8 +99,6 @@ namespace DBTelegraph
                 }
                 sb.Append("));");
                 conn.Query(sb.ToString());
-
-                dataBase?.AddTable(table);
             }
         }
         public void CreateDatabase(Database database)
@@ -121,7 +119,7 @@ namespace DBTelegraph
                     CreateDatabase(dataBase);
                     foreach (var table in dataBase.Tables)
                     {
-                        CreateTable(table);
+                        CreateTable(table, dataBase);
                     }
                     return new Result("Done", "Success");
                 }
@@ -140,7 +138,7 @@ namespace DBTelegraph
                 CreateDatabase(dataBase);
                 foreach (var table in dataBase.Tables)
                 {
-                    CreateTable(table);
+                    CreateTable(table, dataBase);
                 }
                 return new Result("Done", "Success");
             }

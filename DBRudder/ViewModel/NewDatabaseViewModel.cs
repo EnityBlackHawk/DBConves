@@ -67,8 +67,7 @@ namespace DBRudder.ViewModel
 
             var config = new DBTelegraph.ConfigClass(
                 "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;",
-                DBTelegraph.Model.SGBD.SQL_SERVER,
-                DatabaseName
+                DBTelegraph.Model.SGBD.SQL_SERVER
                 );
             var acc = new DataAccess( config );
 

@@ -13,7 +13,7 @@ namespace ConsoleApp1
     {
         static async Task Main(string[] args)
         {
-            ConfigClass configClass = new ConfigClass("Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;", SGBD.SQL_SERVER, null);
+            ConfigClass configClass = new ConfigClass("Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;", SGBD.SQL_SERVER);
             DataAccess dataAccess = new DBTelegraph.DataAccess(configClass);
             Table table = new Table(
                 "table1",
