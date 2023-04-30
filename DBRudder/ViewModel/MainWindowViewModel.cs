@@ -5,10 +5,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tools;
 
 namespace DBRudder.ViewModel
 {
-    public class MainWindowViewModel : Tools.NewObservableObject
+    public class MainWindowViewModel : NewObservableObject
     {
         private Page _newDatabaseView = new View.NewDatabaseView();
 
@@ -23,7 +24,8 @@ namespace DBRudder.ViewModel
 
         public MainWindowViewModel() 
         {
-            CurrentView = _newDatabaseView;
+            //CurrentView = _newDatabaseView;
+            CurrentView = App.Get<View.MainView>();
         }
         
     }

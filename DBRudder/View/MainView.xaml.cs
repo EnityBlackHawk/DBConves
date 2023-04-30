@@ -23,9 +23,11 @@ namespace DBRudder.View
     /// </summary>
     public sealed partial class MainView : Page
     {
+        private ViewModel.MessageTesteViewModel ViewModel;
         public MainView()
         {
             this.InitializeComponent();
+            ViewModel = App.Get(ViewModel);
         }
     }
 }

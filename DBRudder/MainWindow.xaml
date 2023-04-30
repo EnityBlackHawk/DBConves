@@ -8,6 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     
-    <Frame Content="{x:Bind ViewModel.CurrentView}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+    <Frame Content="{x:Bind ViewModel.CurrentView, Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 
 </Window>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using DBRudder.Tools;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -13,17 +14,24 @@ namespace DBRudder
     /// </summary>
     public partial class App : Application
     {
+        private static MessageStream _stream = new MessageStream();
 
         private static IHost _host = Host.CreateDefaultBuilder().ConfigureServices((services) =>
         {
             services.AddSingleton<ViewModel.MainWindowViewModel>();
             services.AddSingleton<ViewModel.NewDatabaseViewModel>();
+            services.AddSingleton<ViewModel.MessageTesteViewModel>();
+
+            services.AddSingleton<View.MainView>();
 
 
         }).Build();
 
 
         public static T Get<T>(T obj) where T : class => _host.Services.GetService(typeof(T)) as T;
+        public static T Get<T>() where T : class => _host.Services.GetService(typeof(T)) as T;
+
+        public static MessageStream GetStream() => _stream;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

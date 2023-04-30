@@ -17,7 +17,7 @@
     <None Remove="Themes\Styles.xaml" />
     <None Remove="View\MainView.xaml" />
     <None Remove="View\NewDatabaseView.xaml" />
-    <None Remove="View\NewTableView.xaml" />
+    <None Remove="View\Teste.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,12 +50,12 @@
     <ProjectReference Include="..\DBConnect\DBTelegraph.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="View\MainView.xaml">
+    <Page Update="View\Teste.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="View\NewTableView.xaml">
+    <Page Update="View\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
