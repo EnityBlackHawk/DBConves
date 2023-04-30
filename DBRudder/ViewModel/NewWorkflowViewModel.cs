@@ -1,4 +1,6 @@
-﻿using DBRudder.Model;
+﻿using Core.Model;
+using DBRudder.Model;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,10 +17,13 @@ namespace DBRudder.ViewModel
 
         public ButtonCommand NewActionCommand { get; set; }
 
+        public AsyncCommand StartCommand { get; set; }
+
         public NewWorkflowViewModel()
         {
             Actions = new ObservableCollection<Model.Action>();
             NewActionCommand = new ButtonCommand(NewAction);
+            StartCommand = new AsyncCommand(RunWorflow);
         }
 
         private void NewAction()
@@ -35,6 +40,20 @@ namespace DBRudder.ViewModel
                 Actions.Add(e.Message as Model.Action);
             }
             App.GetStream().MessageSend -= MessageReceved;
+        }
+
+        private async Task RunWorflow()
+        {
+            List<Core.Model.Action> actionsCORE = new List<Core.Model.Action>();
+            foreach(var action in Actions)
+            {
+                actionsCORE.Add(action.CoreObject);
+            }
+            var wf = new Workflow("Workflow", actionsCORE.ToArray());
+
+            // TODO: Adding out params
+            await wf.StartAsync();
+
         }
     }
 }

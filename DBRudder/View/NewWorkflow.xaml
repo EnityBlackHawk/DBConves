@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Padding="10" RowSpacing="5">
+    <Grid Padding="10" RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -36,10 +36,10 @@
         <ListView Grid.Row="2" SelectionMode="None" ItemsSource="{x:Bind ViewModel.Actions}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="Model:Action">
-                    <Border Background="Black" Padding="5" Margin="0, 0, 0, 5" CornerRadius="5">
-                        <StackPanel>
+                    <Border Background="#444" Padding="10, 15, 10, 15" HorizontalAlignment="Stretch" Margin="0, 0, 0, 5" CornerRadius="5">
+                        <Grid>
                             <TextBlock Text="{Binding Name}" Style="{StaticResource TextblockDef}"/>
-                        </StackPanel>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -47,7 +47,7 @@
         
         <!-- Row 3 -->
         <Grid Grid.Row="3">
-            <Button Content="Salvar" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Button Content="Inciar" Command="{x:Bind ViewModel.StartCommand}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         </Grid>
         
     </Grid>
