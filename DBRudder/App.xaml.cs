@@ -20,9 +20,10 @@ namespace DBRudder
         {
             services.AddSingleton<ViewModel.MainWindowViewModel>();
             services.AddSingleton<ViewModel.NewDatabaseViewModel>();
-            services.AddSingleton<ViewModel.MessageTesteViewModel>();
+            services.AddSingleton<ViewModel.NewWorkflowViewModel>();
 
-            services.AddSingleton<View.MainView>();
+            services.AddSingleton<View.NewWorkflow>();
+            services.AddSingleton<View.NewDatabaseView>();
 
 
         }).Build();

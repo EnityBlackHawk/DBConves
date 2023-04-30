@@ -58,7 +58,7 @@ namespace DBRudder.ViewModel
         public NewDatabaseViewModel()
         {
             Tables = new ObservableCollection<Model.Table>();
-            CreateDatabaseCommand = new ButtonCommand(CreateDatabase);
+            CreateDatabaseCommand = new ButtonCommand(CreateAction);
         }
 
         public async void CreateDatabase()
@@ -80,6 +80,27 @@ namespace DBRudder.ViewModel
                 StatusResult = result.StatusResult;
                 IsDone = true;
             }
+        }
+
+        private void CreateAction()
+        {
+            Database ui_db = new Database(DatabaseName, Tables.ToList());
+
+            var config = new DBTelegraph.ConfigClass(
+                "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;",
+                DBTelegraph.Model.SGBD.SQL_SERVER
+                );
+            var actionCORE = new Core.Actions.CreateDatabaseAction(ui_db, config);
+            var actionUI = new Model.Action("Create new database", actionCORE);
+            App.GetStream().Send(
+                this,
+                new Tools.MessageEventArgs(
+                    nameof(NewDatabaseViewModel),
+                    nameof(NewDatabaseViewModel),
+                    actionUI
+                    )
+                );
+            App.Get<MainWindowViewModel>().CurrentView = App.Get<View.NewWorkflow>();
         }
 
     }

@@ -7,7 +7,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-    <Frame Content="{x:Bind ViewModel.CurrentView, Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+    <Frame Content="{x:Bind ViewModel.CurrentView, Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Frame.ContentTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Frame.ContentTransitions>
+    </Frame>
 
 </Window>

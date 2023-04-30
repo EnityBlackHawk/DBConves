@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,14 +9,16 @@ namespace DBRudder.Tools
 {
     public class MessageEventArgs
     {
-        public MessageEventArgs(string key, string message)
+        public MessageEventArgs(string from, string key, object message)
         {
             Key = key;
             Message = message;
+            From = from;
         }
 
-        public string Key { get; set; }
-        public string Message { get; set; }
+        public string Key { get; }
+        public object Message { get; }
+        public string From { get; }
 
 
     }

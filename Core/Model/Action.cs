@@ -20,6 +20,5 @@ namespace Core.Model
             await Task.Run(OnRun);
             OnActionCompleted?.Invoke();
         }
-
     }
 }

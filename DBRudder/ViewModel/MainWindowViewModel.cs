@@ -25,7 +25,7 @@ namespace DBRudder.ViewModel
         public MainWindowViewModel() 
         {
             //CurrentView = _newDatabaseView;
-            CurrentView = App.Get<View.MainView>();
+            CurrentView = App.Get<View.NewWorkflow>();
         }
         
     }

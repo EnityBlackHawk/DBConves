@@ -15,9 +15,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Themes\Styles.xaml" />
-    <None Remove="View\MainView.xaml" />
     <None Remove="View\NewDatabaseView.xaml" />
-    <None Remove="View\Teste.xaml" />
+    <None Remove="View\NewWorkflow.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,15 +46,11 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DBConnect\DBTelegraph.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="View\Teste.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="View\MainView.xaml">
+    <Page Update="View\NewWorkflow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
