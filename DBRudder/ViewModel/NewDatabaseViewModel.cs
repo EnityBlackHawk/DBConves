@@ -100,7 +100,7 @@ namespace DBRudder.ViewModel
                     actionUI
                     )
                 );
-            App.Get<MainWindowViewModel>().CurrentView = App.Get<View.NewWorkflow>();
+             App.GetRouter().Navegate(App.Get<View.NewWorkflow>());
         }
 
     }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tools;
+using Windows.ApplicationModel.UserDataTasks;
 
 namespace DBRudder.ViewModel
 {
@@ -30,7 +31,7 @@ namespace DBRudder.ViewModel
         {
 
             App.GetStream().MessageSend += MessageReceved;
-            App.Get<ViewModel.MainWindowViewModel>().CurrentView = App.Get<View.NewDatabaseView>();
+            App.GetRouter().Navegate(App.Get<View.NewDatabaseView>());
         }
 
         private void MessageReceved(object sender, Tools.MessageEventArgs e)
@@ -42,17 +43,30 @@ namespace DBRudder.ViewModel
             App.GetStream().MessageSend -= MessageReceved;
         }
 
+        private Workflow wf;
         private async Task RunWorflow()
         {
             List<Core.Model.Action> actionsCORE = new List<Core.Model.Action>();
             foreach(var action in Actions)
             {
                 actionsCORE.Add(action.CoreObject);
+                action.IsWorking = true;
             }
-            var wf = new Workflow("Workflow", actionsCORE.ToArray());
-
+            wf = new Workflow("Workflow", actionsCORE.ToArray());
+            wf.PropertyChanged += Wf_PropertyChanged;
             // TODO: Adding out params
             await wf.StartAsync();
+
+            //foreach (var action in Actions)
+            //    action.IsWorking = false;
+        }
+
+        private void Wf_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            App.GetDispatcherQueue().TryEnqueue(() =>
+            {
+                Actions[0].Progress = wf.Progression;
+            });
 
         }
     }

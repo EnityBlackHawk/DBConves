@@ -28,9 +28,9 @@ namespace Tools
             await _func();
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
-            ExecuteAsync();
+            await ExecuteAsync();
         }
     }
 

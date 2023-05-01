@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using DBRudder.Tools;
+using Tools;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -15,6 +15,7 @@ namespace DBRudder
     public partial class App : Application
     {
         private static MessageStream _stream = new MessageStream();
+        private static Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue;
 
         private static IHost _host = Host.CreateDefaultBuilder().ConfigureServices((services) =>
         {
@@ -28,11 +29,14 @@ namespace DBRudder
 
         }).Build();
 
+        private static Router _router;
 
         public static T Get<T>(T obj) where T : class => _host.Services.GetService(typeof(T)) as T;
         public static T Get<T>() where T : class => _host.Services.GetService(typeof(T)) as T;
 
         public static MessageStream GetStream() => _stream;
+        public static Microsoft.UI.Dispatching.DispatcherQueue GetDispatcherQueue() => dispatcherQueue;
+        public static Router GetRouter() => _router;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -41,6 +45,8 @@ namespace DBRudder
         public App()
         {
             this.InitializeComponent();
+            dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+            _router = new Router(null);
         }
 
         /// <summary>
@@ -50,6 +56,7 @@ namespace DBRudder
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow();
+            _router.Navegate(Get<View.NewWorkflow>());
             m_window.Activate();
         }
 
