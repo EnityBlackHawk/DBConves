@@ -13,7 +13,13 @@ namespace Core.Model
 
         public System.Action? OnActionCompleted { get; set; }
 
+        public Object? Result { get; protected set; }
+
+        public Type? ResultType { get; protected set; }
+
         protected abstract void OnRun();
+
+        public virtual void Settup(params object[] args) { }
 
         public async Task Run()
         {

@@ -161,7 +161,24 @@ namespace DBTelegraph
             }
             catch (SqlException ex)
             {
-                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+        }
+
+        public void DropDatabase(string database)
+        {
+            using IDbConnection cnn = new SqlConnection(_config.ConnectionString);
+
+            if (_config.SGBD == SGBD.SQL_SERVER)
+                cnn.Query($"alter database {database} set single_user with rollback immediate");
+
+            try
+            {
+                cnn.Query("DROP DATABASE " + database);
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
             }
         }
     }

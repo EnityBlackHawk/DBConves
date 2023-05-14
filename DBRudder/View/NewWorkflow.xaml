@@ -10,6 +10,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+
     <Grid Padding="10" RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -19,6 +20,14 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Novo Workflow" Style="{StaticResource TitleTextBlockStyle}"/>
+        <ProgressRing x:DefaultBindMode="OneWay" Value="{x:Bind ViewModel.Progress}" IsActive="{x:Bind ViewModel.IsWorking}"
+                          VerticalAlignment="Center" HorizontalAlignment="Right" IsIndeterminate="True"/>
+        <FontIcon Glyph="&#xE73E;" Opacity="0" Foreground="Green" x:Name="checkMarkIcon"
+                  HorizontalAlignment="Right" FontSize="40">
+            <FontIcon.OpacityTransition>
+                <ScalarTransition Duration="0:0:0.25"/>
+            </FontIcon.OpacityTransition>
+        </FontIcon>
         <!-- Row 1 -->
         <Grid Grid.Row="1" ColumnSpacing="10">
             <Grid.ColumnDefinitions>
@@ -29,7 +38,10 @@
 
             <TextBlock Text="Nome: " Style="{StaticResource TextblockDef}"/>
             <TextBox Grid.Column="1"/>
-            <Button Grid.Column="2" Content="Adicionar Action" Command="{x:Bind ViewModel.NewActionCommand}"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button Grid.Column="2" Content="Adicionar Action" Command="{x:Bind ViewModel.NewActionCommand}"/>
+                <Button Grid.Column="2" Content="Adicionar Action2" Click="Button_Click"/>
+            </StackPanel>
         </Grid>
         
         <!-- Row 2 -->
@@ -51,8 +63,39 @@
         </ListView>
         
         <!-- Row 3 -->
-        <Grid Grid.Row="3">
-            <Button Content="Inciar" Command="{x:Bind ViewModel.StartCommand}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <Grid Grid.Row="3" ColumnSpacing="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <ProgressBar x:Name="progressBar" x:DefaultBindMode="OneWay" VerticalAlignment="Bottom" IsIndeterminate="False"
+                         Value="{x:Bind ViewModel.Progress}" ValueChanged="progressBar_ValueChanged">
+                <ProgressBar.Projection>
+                    <PlaneProjection LocalOffsetY="20"/>
+                </ProgressBar.Projection>
+                <ProgressBar.Resources>
+                    <Storyboard x:Key="out_animation">
+                        <DoubleAnimation Storyboard.TargetName="progressBar" 
+                                         Storyboard.TargetProperty="(FrameWorkElement.Projection).(PlaneProjection.LocalOffsetY)"
+                                         To="20" Duration="0:0:0.25">
+                            <DoubleAnimation.EasingFunction>
+                                <CircleEase EasingMode="EaseInOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                    </Storyboard>
+                    <Storyboard x:Key="in_animation">
+                        <DoubleAnimation Storyboard.TargetName="progressBar" 
+                                         Storyboard.TargetProperty="(FrameWorkElement.Projection).(PlaneProjection.LocalOffsetY)"
+                                         To="0" Duration="0:0:0.25">
+                            <DoubleAnimation.EasingFunction>
+                                <CircleEase EasingMode="EaseInOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                    </Storyboard>
+                </ProgressBar.Resources>
+            </ProgressBar>
+            <Button Content="Inciar" Grid.Column="1" Command="{x:Bind ViewModel.StartCommand}" 
+                    VerticalAlignment="Center" HorizontalAlignment="Right" Padding="20 5 20 5" Style="{StaticResource AccentButtonStyle}"/>
         </Grid>
         
     </Grid>

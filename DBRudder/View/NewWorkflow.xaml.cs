@@ -4,12 +4,14 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -28,6 +30,45 @@ namespace DBRudder.View
         {
             this.InitializeComponent();
             ViewModel = App.Get(ViewModel);
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var config = new DBTelegraph.ConfigClass(
+                "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;",
+                DBTelegraph.Model.SGBD.SQL_SERVER
+                );
+            var factory = new ActionsFactories.DropDatabaseActionFactory(config);
+            var actionPage = new ActionPage(factory);
+
+            ContentDialog cd = new ContentDialog();
+            cd.XamlRoot = this.XamlRoot;
+            cd.Content = actionPage;
+            cd.PrimaryButtonText = "OK";
+            cd.CloseButtonText = "Cancel";
+            ContentDialogResult result = await cd.ShowAsync();
+            
+            if(result == ContentDialogResult.Primary)
+            {
+                var actionUI = new Model.Action(factory.Name, factory.CreateCoreAction());
+                ViewModel.NewActionRecevedCommand.Execute(
+                    actionUI
+                    );
+            }
+
+        }
+
+        private async void progressBar_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if(e.NewValue >= 100)
+            {
+                ((sender as ProgressBar).Resources["out_animation"] as Storyboard).Begin();
+                checkMarkIcon.Opacity = 1;
+                await Task.Delay(1000);
+                checkMarkIcon.Opacity = 0;
+            }
+            else
+                ((sender as ProgressBar).Resources["in_animation"] as Storyboard).Begin();
         }
     }
 }

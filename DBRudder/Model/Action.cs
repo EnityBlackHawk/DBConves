@@ -13,6 +13,8 @@ namespace DBRudder.Model
         public string Name { get; }
         public Core.Model.Action CoreObject { get; }
 
+        public Dictionary<string, string> Properties { get; }
+
         private bool _isWorking;
 
         public bool IsWorking

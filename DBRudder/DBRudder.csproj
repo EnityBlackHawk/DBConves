@@ -15,6 +15,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Themes\Styles.xaml" />
+    <None Remove="View\ActionPage.xaml" />
     <None Remove="View\NewDatabaseView.xaml" />
     <None Remove="View\NewWorkflow.xaml" />
   </ItemGroup>
@@ -48,6 +49,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DBConnect\DBTelegraph.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\ActionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\NewWorkflow.xaml">

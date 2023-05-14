@@ -86,17 +86,13 @@ namespace DBRudder.ViewModel
         {
             Database ui_db = new Database(DatabaseName, Tables.ToList());
 
-            var config = new DBTelegraph.ConfigClass(
-                "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;",
-                DBTelegraph.Model.SGBD.SQL_SERVER
-                );
-            var actionCORE = new Core.Actions.CreateDatabaseAction(ui_db, config);
+            var actionCORE = new Core.Actions.CreateDatabaseAction(ui_db);
             var actionUI = new Model.Action("Create new database", actionCORE);
             App.GetStream().Send(
                 this,
                 new Tools.MessageEventArgs(
                     nameof(NewDatabaseViewModel),
-                    nameof(NewDatabaseViewModel),
+                    "action",
                     actionUI
                     )
                 );

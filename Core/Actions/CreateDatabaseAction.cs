@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Attributes;
 using DBTelegraph;
 using DBTelegraph.Model;
 
@@ -11,23 +12,26 @@ namespace Core.Actions
     public class CreateDatabaseAction : Model.Action
     {
         public Database Database { get; }
-        public ConfigClass ConfigClass { get; }
+        public ConfigClass? ConfigClass { get; private set; }
 
-        public CreateDatabaseAction(Database database, ConfigClass configClass)
+        public CreateDatabaseAction(Database database)
         {
             Database = database;
-            ConfigClass = configClass;
-            
+            ResultType = typeof(Database);   
+        }
+
+        public override void Settup([ObjectInject(typeof(ConfigClass))]params object[] args)
+        {
+            ConfigClass = (args[0] as ConfigClass);
         }
 
         protected override void OnRun()
         {
-            DataAccess acc = new DataAccess(ConfigClass);
+            DataAccess acc = new DataAccess(ConfigClass!);
             var result = acc.CreateDatabaseAndTables(Database);
             Status = result.Status;
             StatusReport = result.StatusResult;
-            Thread.Sleep(5000);
-            Console.WriteLine("Task 1");
+            Result = Database;
         }
     }
 }
