@@ -38,5 +38,7 @@ namespace DBRudder.Model
             Name = name;
             CoreObject = coreObject;
         }
+
+        public static implicit operator Core.Model.Action(Action action) => action.CoreObject;
     }
 }

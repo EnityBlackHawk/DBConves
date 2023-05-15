@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Tools;
+using DBRudder.ViewModel;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -22,21 +23,26 @@ namespace DBRudder
             services.AddSingleton<ViewModel.MainWindowViewModel>();
             services.AddSingleton<ViewModel.NewDatabaseViewModel>();
             services.AddSingleton<ViewModel.NewWorkflowViewModel>();
+            services.AddSingleton<ViewModel.NewActionSelectorViewModel>();
+
+            services.AddSingleton<Model.RegisteredActions>();
 
             services.AddSingleton<View.NewWorkflow>();
             services.AddSingleton<View.NewDatabaseView>();
+            services.AddSingleton<View.NewActionSelectorPage>();
 
 
         }).Build();
 
         private static Router _router;
+        public static Router GetRouter() => _router;
 
         public static T Get<T>(T obj) where T : class => _host.Services.GetService(typeof(T)) as T;
         public static T Get<T>() where T : class => _host.Services.GetService(typeof(T)) as T;
 
         public static MessageStream GetStream() => _stream;
+
         public static Microsoft.UI.Dispatching.DispatcherQueue GetDispatcherQueue() => dispatcherQueue;
-        public static Router GetRouter() => _router;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core.Actions
 {
+    [CoreAction]
     public class DropDatabaseAction : Model.Action
     {
 

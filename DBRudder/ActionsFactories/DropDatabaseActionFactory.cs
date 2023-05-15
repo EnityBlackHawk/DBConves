@@ -11,13 +11,11 @@ namespace DBRudder.ActionsFactories
 {
     public class DropDatabaseActionFactory : ActionFactory
     {
-        public ConfigClass ConfigClass { get; set; }
         public Database Database { get; set; }
 
-        public DropDatabaseActionFactory(ConfigClass configClass)
+        public DropDatabaseActionFactory()
         {
             Properties.Add(nameof(Database), typeof(Database), null);
-            this.ConfigClass = configClass;
         }
 
         public override Core.Model.Action CreateCoreAction()

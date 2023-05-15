@@ -9,6 +9,7 @@ using DBTelegraph.Model;
 
 namespace Core.Actions
 {
+    [CoreAction]
     public class CreateDatabaseAction : Model.Action
     {
         public Database Database { get; }

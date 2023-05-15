@@ -34,28 +34,40 @@ namespace DBRudder.View
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var config = new DBTelegraph.ConfigClass(
-                "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;",
-                DBTelegraph.Model.SGBD.SQL_SERVER
-                );
-            var factory = new ActionsFactories.DropDatabaseActionFactory(config);
-            var actionPage = new ActionPage(factory);
 
+            var content = new View.NewActionSelectorPage();
             ContentDialog cd = new ContentDialog();
             cd.XamlRoot = this.XamlRoot;
-            cd.Content = actionPage;
+            cd.Content = content;
             cd.PrimaryButtonText = "OK";
             cd.CloseButtonText = "Cancel";
             ContentDialogResult result = await cd.ShowAsync();
             
             if(result == ContentDialogResult.Primary)
             {
+                NewActionConfigDialog();
+            }
+        }
+
+
+        public async void NewActionConfigDialog()
+        {
+            var factory = new ActionsFactories.DropDatabaseActionFactory();
+            var actionPage = new ActionPage(factory);
+            ContentDialog cd = new ContentDialog();
+            cd.XamlRoot = this.XamlRoot;
+            cd.Content = actionPage;
+            cd.PrimaryButtonText = "OK";
+            cd.CloseButtonText = "Cancel";
+            ContentDialogResult result = await cd.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
                 var actionUI = new Model.Action(factory.Name, factory.CreateCoreAction());
                 ViewModel.NewActionRecevedCommand.Execute(
                     actionUI
                     );
             }
-
         }
 
         private async void progressBar_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
