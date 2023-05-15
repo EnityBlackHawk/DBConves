@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <ComboBox ItemsSource="{x:Bind _viewModel.ActionsName}">
+        <ComboBox ItemsSource="{x:Bind _viewModel.ActionsName}" SelectedIndex="{x:Bind _viewModel.ActionNameSelected}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>

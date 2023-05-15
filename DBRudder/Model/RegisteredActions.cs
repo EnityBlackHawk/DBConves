@@ -49,7 +49,11 @@ namespace DBRudder.Model
             }
 
             return (Action)Activator.CreateInstance(target);
+        }
 
+        public Type GetActionByName(string name)
+        {
+            return Actions.Find(x => x.Name == name);
         }
         
     }

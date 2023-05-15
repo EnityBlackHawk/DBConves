@@ -16,12 +16,9 @@ namespace DBRudder.ViewModel
     public class NewWorkflowViewModel : NewObservableObject
     {
         public ObservableCollection<Model.Action> Actions { get; set; }
-
         public ButtonCommand NewActionCommand { get; set; }
-
         public AsyncCommand StartCommand { get; set; }
         public ButtonCommand<Model.Action> NewActionRecevedCommand { get; set; }
-
         public ConfigClass ConfigClass { get; set; }
 
         private int _progress;
@@ -40,6 +37,13 @@ namespace DBRudder.ViewModel
             set { _isWorking = value; OnPropertyChanged(); }
         }
 
+        private Type _newActionAdding = null;
+
+        public Type NewActionAdding
+        {
+            get { return _newActionAdding; }
+            set { _newActionAdding = value; OnPropertyChanged(); }
+        }
 
 
         public NewWorkflowViewModel()
@@ -104,5 +108,12 @@ namespace DBRudder.ViewModel
                 Progress = wf.Progression;
             });
         }
+
+        public void AddingNewAction(string actionName)
+        {
+            var r = App.Get<RegisteredActions>();
+            NewActionAdding = r.GetActionByName(actionName);
+        }
+
     }
 }

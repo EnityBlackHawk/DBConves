@@ -48,6 +48,12 @@ namespace Tools
             return new(_col1[index], _col2[index], _col3[index]);
         }
 
+        public virtual void SetCol3ByCol1(T1 value1, T3 value3)
+        {
+            int index = _col1.IndexOf(value1);
+            _col3[index] = value3;
+        }
+
         public IEnumerator<TripleValue<T1, T2, T3>> GetEnumerator()
         {
             for(int i = 0; i < _col1.Count; i++)

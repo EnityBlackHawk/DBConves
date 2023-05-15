@@ -10,9 +10,16 @@ namespace Core.Actions
     [CoreAction]
     public class FunctionAction : Model.Action
     {
+        [UserOption]
+        public string? Message { get; set; }
+
+        public FunctionAction()
+        {
+        }
+
         protected override void OnRun()
         {
-            Console.WriteLine("Task 2 ok");
+            System.Diagnostics.Debug.WriteLine(Message!);
         }
     }
 }

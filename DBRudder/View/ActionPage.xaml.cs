@@ -24,12 +24,12 @@ namespace DBRudder.View
     /// </summary>
     public sealed partial class ActionPage : Page
     {
-        public List<Object> Elements { get;}
+        public List<FrameworkElement> Elements { get;}
         public StackPanel stackPanel { get; set; }
         public ActionPage(ActionFactory actionFactory)
         {
             this.InitializeComponent();
-            Elements = new List<Object>();
+            Elements = new List<FrameworkElement>();
             stackPanel = new StackPanel();
 
             foreach(var prop in  actionFactory.Properties)
@@ -38,7 +38,8 @@ namespace DBRudder.View
                 sp.Orientation = Orientation.Horizontal;
                 
                 TextBox textBox = new TextBox();
-                textBox.Tag = prop.Value1;
+                textBox.Name = prop.Value1;
+                textBox.TextChanged += TextBox_TextChanged;
                 
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = prop.Value1;
@@ -46,7 +47,7 @@ namespace DBRudder.View
                 sp.Children.Add(textBlock);
                 sp.Children.Add(textBox);
 
-                Elements.Add(textBlock);
+                Elements.Add(textBox);
                 
 
                 stackPanel.Children.Add(sp);
@@ -54,7 +55,11 @@ namespace DBRudder.View
 
 
             base.Content = stackPanel;
+        }
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            (sender as TextBox).Tag = (sender as TextBox).Text;
         }
     }
 }

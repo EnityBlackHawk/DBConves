@@ -58,7 +58,7 @@ namespace Core.Model
 
                 foreach (var action in _actions)
                 {
-                    Thread.Sleep(5* 1000);
+                    //Thread.Sleep(5* 1000);
                     var m = action.GetType().GetMethod("Settup");
                     var p = m?.GetParameters();
                     if (p?[0] != null)

@@ -52,22 +52,37 @@ namespace DBRudder.View
 
         public async void NewActionConfigDialog()
         {
-            var factory = new ActionsFactories.DropDatabaseActionFactory();
+            var factory = new ActionsFactories.AutoActionFactory(typeof(Core.Actions.FunctionAction));
             var actionPage = new ActionPage(factory);
+
             ContentDialog cd = new ContentDialog();
             cd.XamlRoot = this.XamlRoot;
             cd.Content = actionPage;
             cd.PrimaryButtonText = "OK";
+            //cd.PrimaryButtonClick += AssignProp;
             cd.CloseButtonText = "Cancel";
             ContentDialogResult result = await cd.ShowAsync();
 
             if (result == ContentDialogResult.Primary)
             {
+                foreach(var x in actionPage.Elements)
+                {
+                    factory.AddValue(x.Name, x.Tag);
+                }
+                
+
+
                 var actionUI = new Model.Action(factory.Name, factory.CreateCoreAction());
                 ViewModel.NewActionRecevedCommand.Execute(
                     actionUI
                     );
             }
+        }
+
+        private void AssignProp(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            var actionPage = sender.Content as ActionPage ?? throw new Exception("Content is null");
+
         }
 
         private async void progressBar_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)

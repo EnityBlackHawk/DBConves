@@ -12,6 +12,13 @@ namespace DBRudder.Model
         public string Name { get; protected set; }
         
         public abstract Core.Model.Action CreateCoreAction();
-        
+        public virtual void AddValue(string prop, object value)
+        {
+            var tuple = Properties.GetByCol1(prop);
+            if (tuple.Value2 != value.GetType())
+                throw new Exception("Invalid value");
+            Properties.SetCol3ByCol1(prop, value);
+        }
+
     }
 }

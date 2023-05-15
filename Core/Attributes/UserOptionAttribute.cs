@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, AllowMultiple = true)]
-    internal class UserOptionAttribute : Attribute
+    public class UserOptionAttribute : Attribute
     {
         public UserOptionAttribute()
         {
