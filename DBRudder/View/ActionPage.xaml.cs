@@ -1,3 +1,4 @@
+using DBRudder.CustomElements;
 using DBRudder.Model;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -24,12 +25,12 @@ namespace DBRudder.View
     /// </summary>
     public sealed partial class ActionPage : Page
     {
-        public List<FrameworkElement> Elements { get;}
+        public List<IExportableValue> Elements { get;}
         public StackPanel stackPanel { get; set; }
         public ActionPage(ActionFactory actionFactory)
         {
             this.InitializeComponent();
-            Elements = new List<FrameworkElement>();
+            Elements = new List<IExportableValue>();
             stackPanel = new StackPanel();
 
             foreach(var prop in  actionFactory.Properties)
@@ -37,9 +38,8 @@ namespace DBRudder.View
                 StackPanel sp = new StackPanel();
                 sp.Orientation = Orientation.Horizontal;
                 
-                TextBox textBox = new TextBox();
-                textBox.Name = prop.Value1;
-                textBox.TextChanged += TextBox_TextChanged;
+                ExportableTextBox textBox = new ExportableTextBox();
+                textBox.Id = prop.Value1;
                 
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = prop.Value1;
@@ -55,11 +55,6 @@ namespace DBRudder.View
 
 
             base.Content = stackPanel;
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            (sender as TextBox).Tag = (sender as TextBox).Text;
         }
     }
 }

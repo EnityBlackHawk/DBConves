@@ -24,12 +24,14 @@ namespace DBRudder
             services.AddSingleton<ViewModel.NewDatabaseViewModel>();
             services.AddSingleton<ViewModel.NewWorkflowViewModel>();
             services.AddSingleton<ViewModel.NewActionSelectorViewModel>();
+            services.AddSingleton<ViewModel.NewActionViewModel>();
 
             services.AddSingleton<Model.RegisteredActions>();
 
             services.AddSingleton<View.NewWorkflow>();
             services.AddSingleton<View.NewDatabaseView>();
             services.AddSingleton<View.NewActionSelectorPage>();
+            services.AddSingleton<View.NewActionPage>();
 
 
         }).Build();

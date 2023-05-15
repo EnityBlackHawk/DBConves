@@ -67,10 +67,8 @@ namespace DBRudder.View
             {
                 foreach(var x in actionPage.Elements)
                 {
-                    factory.AddValue(x.Name, x.Tag);
+                    //factory.AddValue(x.Name, x.Tag);
                 }
-                
-
 
                 var actionUI = new Model.Action(factory.Name, factory.CreateCoreAction());
                 ViewModel.NewActionRecevedCommand.Execute(
