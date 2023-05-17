@@ -1,3 +1,4 @@
+using Core.ActionsFactories;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -52,7 +53,7 @@ namespace DBRudder.View
 
         public async void NewActionConfigDialog()
         {
-            var factory = new ActionsFactories.AutoActionFactory(typeof(Core.Actions.FunctionAction));
+            var factory = new AutoActionFactory(typeof(Core.Actions.FunctionAction));
             var actionPage = new ActionPage(factory);
 
             ContentDialog cd = new ContentDialog();

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBRudder.Model
+namespace Core.Model
 {
     public abstract class ActionFactory
     {
-        public Tools.Matrix3<string, Type, object?> Properties { get; protected set; } = new();
+        public Tools.Matrix3<string, Type, object> Properties { get; protected set; } = new();
         public string Name { get; protected set; }
-        
-        public abstract Core.Model.Action CreateCoreAction();
+
+        public abstract Action CreateCoreAction();
         public virtual void AddValue(string prop, object value)
         {
             var tuple = Properties.GetByCol1(prop);

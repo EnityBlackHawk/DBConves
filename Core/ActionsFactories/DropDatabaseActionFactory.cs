@@ -1,11 +1,11 @@
-﻿using DBRudder.Model;
+﻿using Core.Model;
 using DBTelegraph;
+using DBTelegraph.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tools;
 
 namespace DBRudder.ActionsFactories
 {

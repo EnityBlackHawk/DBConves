@@ -1,5 +1,5 @@
 ﻿#nullable enable
-using DBRudder.ActionsFactories;
+using Core.ActionsFactories;
 using DBRudder.CustomElements;
 using DBRudder.Model;
 using DBRudder.View;
@@ -66,7 +66,7 @@ namespace DBRudder.ViewModel
             }
             else
             {
-                _factory = new ActionsFactories.AutoActionFactory(_actionAdding);
+                _factory = new AutoActionFactory(_actionAdding);
 
                 var actionPage = new ActionPage(_factory);
                 Options = actionPage;

@@ -1,3 +1,4 @@
+using Core.Model;
 using DBRudder.CustomElements;
 using DBRudder.Model;
 using DBRudder.ViewModel;
