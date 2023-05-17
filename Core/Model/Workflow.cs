@@ -70,7 +70,7 @@ namespace Core.Model
                             foreach (Type? a in att[0].TargetType)
                             {
                                 if (!_storedObjects.TryGetValue(a, out object? o))
-                                    throw new Exceptions.PropertyNotFoundException();
+                                    throw new Exceptions.PropertyNotFoundException(a);
                                 param.Add((Object)o);
                             }
                             Object[] objParam = new object[1];

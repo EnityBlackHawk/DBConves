@@ -55,13 +55,13 @@ namespace DBRudder.View
 
                 Elements.Add(textBox);
                 
-                Button button = new Button();
-                button.Content = "Salvar";
-                button.Click += save_click;
 
                 stackPanel.Children.Add(sp);
-                stackPanel.Children.Add(button);
             }
+            Button button = new Button();
+            button.Content = "Salvar";
+            button.Click += save_click;
+            stackPanel.Children.Add(button);
 
 
             base.Content = stackPanel;

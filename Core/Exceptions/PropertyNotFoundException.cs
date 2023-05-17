@@ -8,7 +8,7 @@ namespace Core.Exceptions
 {
     public class PropertyNotFoundException : Exception
     {
-        public PropertyNotFoundException() : base("No object in results matches if the required type for injection")
+        public PropertyNotFoundException(Type t) : base($"No object in results matches if the required type for injection: {t.Name}")
         {}
     }
 }
