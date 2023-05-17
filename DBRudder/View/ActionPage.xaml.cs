@@ -1,5 +1,6 @@
 using DBRudder.CustomElements;
 using DBRudder.Model;
+using DBRudder.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Tools;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -27,8 +29,11 @@ namespace DBRudder.View
     {
         public List<IExportableValue> Elements { get;}
         public StackPanel stackPanel { get; set; }
+
+        private ActionFactory _factory;
         public ActionPage(ActionFactory actionFactory)
         {
+            _factory = actionFactory;
             this.InitializeComponent();
             Elements = new List<IExportableValue>();
             stackPanel = new StackPanel();
@@ -49,12 +54,33 @@ namespace DBRudder.View
 
                 Elements.Add(textBox);
                 
+                Button button = new Button();
+                button.Content = "Salvar";
+                button.Click += save_click;
 
                 stackPanel.Children.Add(sp);
+                stackPanel.Children.Add(button);
             }
 
 
             base.Content = stackPanel;
+        }
+
+        private void save_click(object sender, RoutedEventArgs e)
+        {
+            foreach (var exportableValue in Elements)
+            {
+                _factory?.AddValue(exportableValue.Id, Convert.ChangeType(exportableValue.Value, exportableValue.ExportType));
+            }
+            var actionUI = new Model.Action(_factory?.Name, _factory?.CreateCoreAction());
+            App.GetStream().Send(
+                this,
+                new MessageEventArgs(
+                    nameof(ActionPage),
+                    MessagesKeys.NewAction,
+                    actionUI
+                    ));
+            App.GetRouter().NavegateBack();
         }
     }
 }

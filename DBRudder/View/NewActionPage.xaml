@@ -29,9 +29,9 @@
         </Frame>
         
         <!-- Row 2 -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="2">
+        <!--<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="2">
             <Button Content="Salvar" Command="{x:Bind ViewModel.CreateActionCommand}"/>
-        </StackPanel>
+        </StackPanel>-->
     
     </Grid>
 </Page>

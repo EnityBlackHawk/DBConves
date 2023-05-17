@@ -84,15 +84,9 @@ namespace DBRudder.ViewModel
 
         private void MessageReceved(object sender, Tools.MessageEventArgs e)
         {
-            if(e.From == nameof(NewDatabaseViewModel))
-            {
+            if(e.Key == MessagesKeys.NewAction)
                 Actions.Add(e.Message as Model.Action);
-            }
-            else if(e.From == nameof(NewActionViewModel) && e.Key == "NewAction")
-            {
-                Actions.Add(e.Message as Model.Action);
-            }
-            
+
             App.GetStream().MessageSend -= MessageReceved;
         }
 

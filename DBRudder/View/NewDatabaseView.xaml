@@ -28,7 +28,7 @@
         <TextBlock Text="Nova Database" FontSize="30" FontWeight="Bold" Foreground="White"/>
         <!-- Row 1 -->
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" ColumnSpacing="10">
-
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -36,12 +36,12 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock Text="Nome:" Grid.Column="0" Margin="0 0 10 0" Style="{StaticResource TextblockDef}"/>
-            <TextBox Text="{x:Bind ViewModel.DatabaseName, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" MinWidth="500" />
+            <TextBox Text="{x:Bind ViewModel.DatabaseName, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" 
+                     VerticalAlignment="Center" Grid.Column="1" MinWidth="500" />
             <Button Content="Adicionar tabela" Grid.Column="2" VerticalAlignment="Center" Click="AddTable"/>
         </Grid>
         <!-- Row 2 -->
         <TextBlock Text="Tabelas: " Grid.Row="2" Style="{StaticResource TextblockDef}"/>
-        
         <!-- Row 3 -->
         <!-- Tables -->
         <ListView Grid.Row="3" Grid.ColumnSpan="2" CornerRadius="5" ItemsSource="{x:Bind ViewModel.Tables}"

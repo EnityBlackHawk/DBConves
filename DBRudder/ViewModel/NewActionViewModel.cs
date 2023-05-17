@@ -3,6 +3,7 @@ using DBRudder.ActionsFactories;
 using DBRudder.CustomElements;
 using DBRudder.Model;
 using DBRudder.View;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,21 +43,37 @@ namespace DBRudder.ViewModel
         private List<IExportableValue> _exportableValues;
         private Type? _actionAdding;
         private AutoActionFactory? _factory;
+        private RegisteredActions _registeredActions;
 
         public NewActionViewModel(RegisteredActions registeredActions)
         {
             ActionNames = new ObservableCollection<string>(registeredActions.GetActionNames());
             SetActionCommand = new AsyncCommand(SetAction);
             CreateActionCommand = new AsyncCommand(CreateAction);
+            _registeredActions = registeredActions;
         }
 
 
         private async Task SetAction()
         {
-            _factory = new ActionsFactories.AutoActionFactory(typeof(Core.Actions.FunctionAction));
-            var actionPage = new ActionPage(_factory);
-            Options = actionPage;
-            _exportableValues = actionPage.Elements;
+            _actionAdding = _registeredActions.GetActionByName(ActionNames[SelectedAction]);
+
+           
+            if(App.GetViewActionManager().Get(_actionAdding, out IActionView customActionViewType))
+            {
+                var actionPage = customActionViewType as Page ?? null;
+                Options = actionPage!;
+            }
+            else
+            {
+                _factory = new ActionsFactories.AutoActionFactory(_actionAdding);
+
+                var actionPage = new ActionPage(_factory);
+                Options = actionPage;
+                _exportableValues = actionPage.Elements;
+            }
+
+
         }
 
         private async Task CreateAction()
@@ -70,7 +87,7 @@ namespace DBRudder.ViewModel
                 this, 
                 new MessageEventArgs(
                     nameof(NewActionViewModel),
-                    "NewAction",
+                    MessagesKeys.NewAction,
                     actionUI
                     ));
             App.GetRouter().NavegateBack();
