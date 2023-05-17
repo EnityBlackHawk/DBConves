@@ -3,6 +3,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Tools;
 using DBRudder.ViewModel;
+using System.Collections.Generic;
+using System;
+using DBRudder.Model;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -24,14 +27,14 @@ namespace DBRudder
             services.AddSingleton<ViewModel.NewDatabaseViewModel>();
             services.AddSingleton<ViewModel.NewWorkflowViewModel>();
             services.AddSingleton<ViewModel.NewActionSelectorViewModel>();
+            services.AddSingleton<ViewModel.NewActionViewModel>();
 
             services.AddSingleton<Model.RegisteredActions>();
 
             services.AddSingleton<View.NewWorkflow>();
             services.AddSingleton<View.NewDatabaseView>();
             services.AddSingleton<View.NewActionSelectorPage>();
-
-
+            services.AddSingleton<View.NewActionPage>();
         }).Build();
 
         private static Router _router;
@@ -44,6 +47,10 @@ namespace DBRudder
 
         public static Microsoft.UI.Dispatching.DispatcherQueue GetDispatcherQueue() => dispatcherQueue;
 
+        private static ActionViewManager _viewManager;
+
+        public static ActionViewManager GetViewActionManager() => _viewManager;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -53,6 +60,7 @@ namespace DBRudder
             this.InitializeComponent();
             dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
             _router = new Router(null);
+            _viewManager = new ActionViewManager();
         }
 
         /// <summary>
@@ -62,6 +70,7 @@ namespace DBRudder
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow();
+            _viewManager.Add(Get<View.NewDatabaseView>());
             _router.Navegate(Get<View.NewWorkflow>());
             m_window.Activate();
         }

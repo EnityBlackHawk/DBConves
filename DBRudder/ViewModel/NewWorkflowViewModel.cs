@@ -19,6 +19,8 @@ namespace DBRudder.ViewModel
         public ButtonCommand NewActionCommand { get; set; }
         public AsyncCommand StartCommand { get; set; }
         public ButtonCommand<Model.Action> NewActionRecevedCommand { get; set; }
+
+        public ButtonCommand NewActionPageCommand { get; set; }
         public ConfigClass ConfigClass { get; set; }
 
         private int _progress;
@@ -52,7 +54,7 @@ namespace DBRudder.ViewModel
             NewActionCommand = new ButtonCommand(NewAction);
             StartCommand = new AsyncCommand(RunWorflow);
             NewActionRecevedCommand = new ButtonCommand<Model.Action>(NewActionReceved);
-
+            NewActionPageCommand = new ButtonCommand(NewActionPage);
 
             ConfigClass = new DBTelegraph.ConfigClass(
                 "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;",
@@ -74,13 +76,17 @@ namespace DBRudder.ViewModel
             Actions.Add(action);
         }
 
+        private void NewActionPage()
+        {
+            App.GetStream().MessageSend += MessageReceved;
+            App.GetRouter().Navegate(App.Get<View.NewActionPage>());
+        }
+
         private void MessageReceved(object sender, Tools.MessageEventArgs e)
         {
-            if(e.From == nameof(NewDatabaseViewModel))
-            {
-                
+            if(e.Key == MessagesKeys.NewAction)
                 Actions.Add(e.Message as Model.Action);
-            }
+
             App.GetStream().MessageSend -= MessageReceved;
         }
 

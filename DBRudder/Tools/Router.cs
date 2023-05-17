@@ -15,9 +15,26 @@ namespace Tools
             set { _currentView = value; OnPropertyChanged(); }
         }
 
+        private object _callerView;
+
+        public object CallerView
+        {
+            get { return _callerView; }
+            set { _callerView = value; OnPropertyChanged(); }
+        }
+
+
         public void Navegate(object dest)
         {
+            CallerView = CurrentView;
             CurrentView = dest;
+        }
+
+        public void NavegateBack()
+        {
+            object temp = CallerView;
+            CallerView = CurrentView;
+            CurrentView = temp;
         }
 
         public Router(object dest)

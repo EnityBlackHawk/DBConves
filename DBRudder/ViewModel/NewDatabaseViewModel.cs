@@ -92,7 +92,7 @@ namespace DBRudder.ViewModel
                 this,
                 new Tools.MessageEventArgs(
                     nameof(NewDatabaseViewModel),
-                    "action",
+                    MessagesKeys.NewAction,
                     actionUI
                     )
                 );
