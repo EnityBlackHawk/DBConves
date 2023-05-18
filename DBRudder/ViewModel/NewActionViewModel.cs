@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using Core.ActionsFactories;
+using Core.Model;
 using DBRudder.CustomElements;
 using DBRudder.Model;
 using DBRudder.View;
@@ -42,7 +43,7 @@ namespace DBRudder.ViewModel
 
         private List<IExportableValue> _exportableValues;
         private Type? _actionAdding;
-        private AutoActionFactory? _factory;
+        private ActionFactory? _factory;
         private RegisteredActions _registeredActions;
 
         public NewActionViewModel(RegisteredActions registeredActions)
@@ -67,7 +68,6 @@ namespace DBRudder.ViewModel
             else
             {
                 _factory = new AutoActionFactory(_actionAdding);
-
                 var actionPage = new ActionPage(_factory);
                 Options = actionPage;
                 _exportableValues = actionPage.Elements;
@@ -75,7 +75,7 @@ namespace DBRudder.ViewModel
 
 
         }
-
+        // nao usando
         private async Task CreateAction()
         {
             foreach(var exportableValue in _exportableValues)

@@ -96,5 +96,10 @@ namespace DBRudder.View
             else
                 ((sender as ProgressBar).Resources["in_animation"] as Storyboard).Begin();
         }
+
+        private void RemoveAction(object sender, RoutedEventArgs e)
+        {
+            ViewModel.RemoveActionCommand.Execute((int)(sender as Button).Tag);
+        }
     }
 }

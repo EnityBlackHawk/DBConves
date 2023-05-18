@@ -6,6 +6,7 @@ using DBRudder.ViewModel;
 using System.Collections.Generic;
 using System;
 using DBRudder.Model;
+using DBRudder.View;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -61,6 +62,9 @@ namespace DBRudder
             dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
             _router = new Router(null);
             _viewManager = new ActionViewManager();
+
+            Core.Methods.ActionCreated += OnActionCreating;
+
         }
 
         /// <summary>
@@ -76,5 +80,19 @@ namespace DBRudder
         }
 
         private Window m_window;
+
+
+        private void OnActionCreating(object sender, Core.Model.ActionCreatedEventArgs e)
+        {
+            var actionUI = new Model.Action(e.Action.Name, e.Action);
+            GetStream().Send(
+                sender,
+                new MessageEventArgs(
+                    sender.GetType().Name,
+                    MessagesKeys.NewAction,
+                    actionUI
+                    ));
+            GetRouter().NavegateBack();
+        }
     }
 }

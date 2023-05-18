@@ -73,15 +73,7 @@ namespace DBRudder.View
             {
                 _factory?.AddValue(exportableValue.Id, Convert.ChangeType(exportableValue.Value, exportableValue.ExportType));
             }
-            var actionUI = new Model.Action(_factory?.Name, _factory?.CreateCoreAction());
-            App.GetStream().Send(
-                this,
-                new MessageEventArgs(
-                    nameof(ActionPage),
-                    MessagesKeys.NewAction,
-                    actionUI
-                    ));
-            App.GetRouter().NavegateBack();
+            _factory.CreateCoreAction();
         }
     }
 }

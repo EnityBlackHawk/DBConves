@@ -15,6 +15,8 @@ namespace Core.Actions
         public Database Database { get; }
         public ConfigClass? ConfigClass { get; private set; }
 
+        public override string Name => "Create Database Action";
+
         public CreateDatabaseAction(Database database)
         {
             Database = database;

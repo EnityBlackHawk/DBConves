@@ -87,16 +87,7 @@ namespace DBRudder.ViewModel
             Database ui_db = new Database(DatabaseName, Tables.ToList());
 
             var actionCORE = new Core.Actions.CreateDatabaseAction(ui_db);
-            var actionUI = new Model.Action("Create new database", actionCORE);
-            App.GetStream().Send(
-                this,
-                new Tools.MessageEventArgs(
-                    nameof(NewDatabaseViewModel),
-                    MessagesKeys.NewAction,
-                    actionUI
-                    )
-                );
-             App.GetRouter().Navegate(App.Get<View.NewWorkflow>());
+            actionCORE.OnActionCreation();
         }
 
     }

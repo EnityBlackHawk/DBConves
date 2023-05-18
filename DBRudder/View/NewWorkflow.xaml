@@ -39,8 +39,9 @@
             <TextBlock Text="Nome: " Style="{StaticResource TextblockDef}"/>
             <TextBox Grid.Column="1"/>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <!--<Button Grid.Column="2" Content="Adicionar Action" Command="{x:Bind ViewModel.NewActionCommand}"/>-->
-                <Button Grid.Column="2" Content="Adicionar Action2" Command="{x:Bind ViewModel.NewActionPageCommand}"/>
+                <Button Grid.Column="2" Command="{x:Bind ViewModel.NewActionPageCommand}">
+                    <FontIcon Glyph="&#xE710;" FontSize="30"/>
+                </Button>
             </StackPanel>
         </Grid>
         
@@ -53,9 +54,13 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <ProgressRing IsActive="{Binding IsWorking, Mode=OneWay}" Value="{Binding Progress}" IsIndeterminate="False" Margin="0, 0, 5, 0"/>
                             <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource TextblockDef}"/>
+                            <Button Tag="{Binding Id}" Click="RemoveAction" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2">
+                                <FontIcon Glyph="&#xE711;" FontSize="20"/>
+                            </Button>
                         </Grid>
                     </Border>
                 </DataTemplate>

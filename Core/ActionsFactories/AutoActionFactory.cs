@@ -32,15 +32,15 @@ namespace Core.ActionsFactories
 
         public override Model.Action CreateCoreAction()
         {
-            object obj = Activator.CreateInstance(_coreActionType);
+            Model.Action? obj = (Model.Action?)Activator.CreateInstance(_coreActionType) ?? throw new Exception("Error on creating action");
 
             foreach (var p in base.Properties)
             {
                 var info = _coreActionType.GetProperty(p.Value1);
-                info?.SetValue(obj, p.Value3);
+                info?.SetValue(obj!, p.Value3);
             }
-
-            return (Model.Action)obj;
+            obj.OnActionCreation();
+            return obj;
         }
     }
 }

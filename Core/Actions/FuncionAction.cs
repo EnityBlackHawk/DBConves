@@ -13,6 +13,8 @@ namespace Core.Actions
         [UserOption]
         public string? Message { get; set; }
 
+        public override string Name => "Fuction Action";
+
         public FunctionAction()
         {
         }

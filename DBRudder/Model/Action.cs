@@ -31,6 +31,13 @@ namespace DBRudder.Model
             set { _progress = value; OnPropertyChanged(); }
         }
 
+        private int _id;
+
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; OnPropertyChanged(); }
+        }
 
 
         public Action(string name, Core.Model.Action coreObject)

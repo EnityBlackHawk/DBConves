@@ -16,6 +16,8 @@ namespace Core.Actions
         public Database? Database { get; private set; }
         public ConfigClass? ConfigClass { get; private set; }
 
+        public override string Name => "Drop Database Action";
+
         public DropDatabaseAction()
         {
         }

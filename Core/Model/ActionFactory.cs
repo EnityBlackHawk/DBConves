@@ -11,6 +11,7 @@ namespace Core.Model
         public Tools.Matrix3<string, Type, object> Properties { get; protected set; } = new();
         public string Name { get; protected set; }
 
+
         public abstract Action CreateCoreAction();
         public virtual void AddValue(string prop, object value)
         {

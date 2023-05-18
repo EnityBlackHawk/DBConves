@@ -21,6 +21,8 @@ namespace DBRudder.ViewModel
         public ButtonCommand<Model.Action> NewActionRecevedCommand { get; set; }
 
         public ButtonCommand NewActionPageCommand { get; set; }
+
+        public ButtonCommand<int> RemoveActionCommand { get; set; }
         public ConfigClass ConfigClass { get; set; }
 
         private int _progress;
@@ -55,6 +57,7 @@ namespace DBRudder.ViewModel
             StartCommand = new AsyncCommand(RunWorflow);
             NewActionRecevedCommand = new ButtonCommand<Model.Action>(NewActionReceved);
             NewActionPageCommand = new ButtonCommand(NewActionPage);
+            RemoveActionCommand = new ButtonCommand<int>(RemoveAction);
 
             ConfigClass = new DBTelegraph.ConfigClass(
                 "Server=BLACKHAWKPC\\SQLSERVER;Trusted_Connection=True;",
@@ -85,9 +88,25 @@ namespace DBRudder.ViewModel
         private void MessageReceved(object sender, Tools.MessageEventArgs e)
         {
             if(e.Key == MessagesKeys.NewAction)
-                Actions.Add(e.Message as Model.Action);
+            {
+                var a = (e.Message as Model.Action);
+                a.Id = Actions.Count;
+                Actions.Add(a);
+            }
 
             App.GetStream().MessageSend -= MessageReceved;
+        }
+
+        private void RemoveAction(int index)
+        {
+            foreach(var a in Actions)
+            {
+                if(a.Id == index)
+                {
+                    Actions.Remove(a);
+                    break;
+                }
+            }
         }
 
         private Workflow wf;
