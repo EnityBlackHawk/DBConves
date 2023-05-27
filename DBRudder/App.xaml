@@ -16,6 +16,7 @@
             <Converter:TypeToStringConverter x:Key="TypeToStringConverter"/>
             <Converter:StringToInfoBarSeverityConverter x:Key="StringToInfoBarSeverityConverter"/>
             <Converter:BoolToIntConverter x:Key="BoolToIntConverter"/>
+            <Converter:CoreResultToColorConverter x:Key="ResultToColorConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

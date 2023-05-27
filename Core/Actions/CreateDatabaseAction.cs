@@ -20,7 +20,7 @@ namespace Core.Actions
         public CreateDatabaseAction(Database database)
         {
             Database = database;
-            ResultType = typeof(Database);   
+            ResultArtifactType = typeof(Database);   
         }
 
         public override void Settup([ObjectInject(typeof(ConfigClass))]params object[] args)
@@ -32,9 +32,8 @@ namespace Core.Actions
         {
             DataAccess acc = new DataAccess(ConfigClass!);
             var result = acc.CreateDatabaseAndTables(Database);
-            Status = result.Status;
-            StatusReport = result.StatusResult;
-            Result = Database;
+            Status = result;
+            ResultArtifact = Database;
         }
     }
 }

@@ -10,14 +10,16 @@ namespace Core.Model
     public abstract class Action
     {
         public abstract string Name { get; }
-        public string StatusReport { get; protected set; } = string.Empty;
-        public string Status { get; protected set; } = string.Empty;
+
+        public Model.Result? Status { get; set; }
 
         public System.Action? OnActionCompleted { get; set; }
 
-        public Object? Result { get; protected set; }
+        public Object? ResultArtifact { get; protected set; }
 
-        public Type? ResultType { get; protected set; }
+        public Type? ResultArtifactType { get; protected set; }
+
+        public event EventHandler<Model.ActionCompletedEventArgs>? ActionCompleted;
 
         protected abstract void OnRun();
 
@@ -32,6 +34,7 @@ namespace Core.Model
         {
             await Task.Run(OnRun);
             OnActionCompleted?.Invoke();
+            ActionCompleted?.Invoke(this, new ActionCompletedEventArgs(Status!, ResultArtifact, ResultArtifactType));
         }
     }
 }

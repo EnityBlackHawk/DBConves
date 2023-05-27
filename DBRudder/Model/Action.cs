@@ -39,13 +39,33 @@ namespace DBRudder.Model
             set { _id = value; OnPropertyChanged(); }
         }
 
+        private Core.Model.Result _result = null;
+
+        public Core.Model.Result Result
+        {
+            get { return _result; }
+            set { _result = value; OnPropertyChanged(); }
+        }
+
 
         public Action(string name, Core.Model.Action coreObject)
         {
             Name = name;
             CoreObject = coreObject;
+            Result = coreObject.Status;
+            coreObject.ActionCompleted += ExecutionCompleted;
+        }
+
+        private void ExecutionCompleted(object sender, Core.Model.ActionCompletedEventArgs e)
+        {
+
+            App.GetDispatcherQueue().TryEnqueue(() => 
+            {
+                Result = e.Result;
+            });
         }
 
         public static implicit operator Core.Model.Action(Action action) => action.CoreObject;
+
     }
 }

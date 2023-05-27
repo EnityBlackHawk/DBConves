@@ -22,6 +22,7 @@ namespace Core.Actions
         protected override void OnRun()
         {
             System.Diagnostics.Debug.WriteLine(Message!);
+            Status = new Model.Result("Done", "Success");
         }
     }
 }

@@ -54,7 +54,7 @@
         <!-- Row 3 -->
         <!-- Tables -->
         <ListView Grid.Row="3" Grid.ColumnSpan="2" CornerRadius="5" ItemsSource="{x:Bind ViewModel.Tables}"
-                  SelectionMode="None">
+                  SelectionMode="None" CanReorderItems="True" CanDragItems="True" AllowDrop="True">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="Model:Table">
                     

@@ -12,7 +12,13 @@ namespace DBTelegraph
 {
     public readonly struct Result
     {
+        /// <summary>
+        /// Message
+        /// </summary>
         public string Status { get; }
+        /// <summary>
+        /// Status (Error, Success)
+        /// </summary>
         public string StatusResult { get; }
         public Result(string status, string statusResult)
         {
@@ -134,9 +140,18 @@ namespace DBTelegraph
         }
         public void CreateDatabase(Database database)
         {
-            using (IDbConnection conn = new SqlConnection(_config.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(_config.ConnectionString))
             {
-                conn.Query("CREATE DATABASE " + database);
+
+                //conn.Query("CREATE DATABASE " + database);
+                SqlCommand command = new SqlCommand($"CREATE DATABASE {database}", conn);
+                //SqlParameter param = new();
+                //param.ParameterName = "@database";
+                //param.Value = (string)database;
+
+                //command.Parameters.Add(param);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
             }
         }
 
@@ -154,7 +169,7 @@ namespace DBTelegraph
                     }
                     return new Result("Done", "Success");
                 }
-                catch (Exception ex)
+                catch (System.Data.SqlClient.SqlException ex)
                 {
                     return new Result(ex.Message, "Error");
                 }
@@ -179,7 +194,7 @@ namespace DBTelegraph
             }
         }
 
-        public void DropDatabase(Database database)
+        public Result DropDatabase(Database database)
         {
             using IDbConnection cnn = new SqlConnection(_config.ConnectionString);
             
@@ -192,11 +207,12 @@ namespace DBTelegraph
             }
             catch (SqlException ex)
             {
-                throw ex;
+                return new Result(ex.Message, "Error");
             }
+            return new Result("Done", "Success");
         }
 
-        public void DropDatabase(string database)
+        public Result DropDatabase(string database)
         {
             using IDbConnection cnn = new SqlConnection(_config.ConnectionString);
 
@@ -209,8 +225,9 @@ namespace DBTelegraph
             }
             catch (SqlException ex)
             {
-                throw ex;
+                return new Result(ex.Message, "Error");
             }
+            return new Result("Done", "Success");
         }
     }
 }

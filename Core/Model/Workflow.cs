@@ -80,14 +80,13 @@ namespace Core.Model
                     }
 
                     await action.Run();
-                    if(action.Result != null)
+                    if(action.ResultArtifact != null)
                     {
-                        _storedObjects.Add(action.ResultType!, action.Result);
+                        _storedObjects.Add(action.ResultArtifactType!, action.ResultArtifact);
                     }
                     IncProgression();
                 }
             });
-            
         }
 
         public void AddAction(Action action) => _actions.Add(action);
