@@ -15,6 +15,7 @@
             <!-- Other app resources here -->
             <Converter:TypeToStringConverter x:Key="TypeToStringConverter"/>
             <Converter:StringToInfoBarSeverityConverter x:Key="StringToInfoBarSeverityConverter"/>
+            <Converter:BoolToIntConverter x:Key="BoolToIntConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

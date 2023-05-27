@@ -24,6 +24,23 @@ namespace DBTelegraph
 
     public class DataAccess
     {
+        internal struct FK
+        {
+            public string? this_prop;
+            public string? target_table;
+            public string? target_prop;
+
+            public FK(string? this_prop, string? target_table, string? target_prop)
+            {
+                this.this_prop = this_prop;
+                this.target_table = target_table;
+                this.target_prop = target_prop;
+            }
+
+            public static implicit operator string(FK fK) => 
+                $"FOREIGN KEY ({fK.this_prop}) REFERENCES {fK.target_table}({fK.target_prop})";
+            
+        }
 
         private ConfigClass _config;
 
@@ -83,10 +100,14 @@ namespace DBTelegraph
             {
                 StringBuilder sb = new StringBuilder($"Create table {table.Name} (\n");
                 List<string> pks = new List<string>();
+                List<FK> fks = new List<FK>();
                 foreach (var c in table.Columns)
                 {
                     if (c.Constraints.Contains(Constraints.PRIMARY_KEY))
                         pks.Add(c.Name);
+
+                    if (c.Constraints.Contains(Constraints.FOREIGN_KEY))
+                        fks.Add(new FK(c.Name, c.ReferencesTable!, c.ReferecesColumn!));
 
                     sb.AppendLine($"\t {c.Name} {TypeTable.getSQLType(c)},");
                 }
@@ -97,7 +118,17 @@ namespace DBTelegraph
                     if (i < pks.Count - 1)
                         sb.Append(", ");
                 }
-                sb.Append("));");
+                sb.AppendLine(")" + (fks.Count != 0 ? "," : ""));
+
+                foreach(var f in fks)
+                {
+                    sb.Append(f);
+                    if (f != fks.Last())
+                        sb.AppendLine(",");
+                    else
+                        sb.AppendLine();
+                }
+                sb.Append(");");
                 conn.Query(sb.ToString());
             }
         }

@@ -33,5 +33,10 @@ namespace DBRudder.Model
             return new DBTelegraph.Model.Table(table.Name, list.ToArray());
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
     }
 }

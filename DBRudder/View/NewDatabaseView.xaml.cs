@@ -41,7 +41,8 @@ namespace DBRudder.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             int tag = (int)(sender as Button).Tag;
-            ViewModel.Tables[tag].columns.Add(new Model.Column { Name = "Column 1", Type = "String" });
+            var c = ViewModel.Tables[tag].columns;
+            c.Add(new Model.Column { Name = $"Column {c.Count + 1}", Type = "Int32", IsPrimaryKey = c.Count == 0, TableId = tag});
         }
 
         private void AddTable(object sender, RoutedEventArgs e)
@@ -53,6 +54,12 @@ namespace DBRudder.View
         {
             int tag = (int)((sender as Button).Tag);
             ViewModel.Tables.RemoveAt(tag);
+        }
+
+        private void RemoveColumn(object sender, RoutedEventArgs e)
+        {
+            Column column = (Column)((sender as Button).Tag);
+            ViewModel.Tables[column.TableId].columns.Remove(column);
         }
     }
 }

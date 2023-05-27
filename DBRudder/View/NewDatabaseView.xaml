@@ -8,7 +8,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Model="using:DBRudder.Model"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Name="newDatabaseView">
+
+    <Page.Resources>
+        <DataTemplate x:Key="Combo_Prop_Name">
+            <Grid>
+                <TextBlock Style="{StaticResource TextblockDef}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
 
     <Grid Padding="10" RowSpacing="10">
         <Grid.RowDefinitions>
@@ -50,7 +59,7 @@
                 <DataTemplate x:DataType="Model:Table">
                     
                     <Expander VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                              HorizontalContentAlignment="Left" Margin="0, 0, 0, 5"
+                              HorizontalContentAlignment="Stretch" Margin="0, 0, 0, 5"
                               IsExpanded="True">
                         <Expander.Header>
                             <Grid Padding="10 20 10 20" ColumnSpacing="10">
@@ -80,13 +89,41 @@
                             <ListView SelectionMode="None" ItemsSource="{Binding columns}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                            <TextBox Text="{Binding Name, Mode=TwoWay}" Style="{StaticResource TextblockDef}" Margin="0, 0, 20, 0"
-                                                        Width="300"/>
-                                            <ComboBox SelectedItem="{Binding Type, Mode=TwoWay}" Width="300"
-                                                      ItemsSource="{Binding GetSupportedTypes}" Margin="0, 0, 20, 0"/>
-                                            <CheckBox Content="Primary key" Margin="0, 0, 20, 0" IsChecked="{Binding IsPrimaryKey, Mode=TwoWay}"/>
-                                        </StackPanel>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                <TextBox Text="{Binding Name, Mode=TwoWay}" Style="{StaticResource TextblockDef}" Margin="0, 0, 20, 0"
+                                                            Width="300"/>
+                                                <ComboBox SelectedItem="{Binding Type, Mode=TwoWay}" Width="100"
+                                                          ItemsSource="{Binding GetSupportedTypes}" Margin="0, 0, 20, 0"/>
+                                                <CheckBox Content="Primary key" Margin="0, 0, 10, 0" IsChecked="{Binding IsPrimaryKey, Mode=TwoWay}"/>
+                                                <CheckBox Content="Foreign key" Margin="0, 0, 10, 0" IsChecked="{Binding IsForeignKey, Mode=TwoWay}" x:Name="fk_check"/>
+                                                <ComboBox ItemsSource="{Binding Path=ViewModel.Tables, ElementName=newDatabaseView, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedItem="{Binding RefTable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" Margin="0, 0, 10, 0" 
+                                                          ItemTemplate="{StaticResource Combo_Prop_Name}"
+                                                          Visibility="{Binding ElementName=fk_check, Path=IsChecked}" 
+                                                          Opacity="{Binding ElementName=fk_check, Path=IsChecked, Converter={StaticResource BoolToIntConverter}}">
+                                                    <ComboBox.OpacityTransition>
+                                                        <ScalarTransition Duration="0:0:0.15"/>
+                                                    </ComboBox.OpacityTransition>
+                                                </ComboBox>
+                                                <ComboBox ItemsSource="{Binding RefTable.columns, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ElementName=fk_check, Path=IsChecked}"
+                                                          Width="150" SelectedItem="{Binding RefColumn, Mode=TwoWay}" ItemTemplate="{StaticResource Combo_Prop_Name}"
+                                                          Opacity="{Binding ElementName=fk_check, Path=IsChecked, Converter={StaticResource BoolToIntConverter}}">
+                                                    <ComboBox.OpacityTransition>
+                                                        <ScalarTransition Duration="0:0:0.15"/>
+                                                    </ComboBox.OpacityTransition>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <Button VerticalAlignment="Center" HorizontalAlignment="Center" Tag="{Binding}"
+                                                    Click="RemoveColumn" Grid.Column="1">
+                                                <FontIcon Glyph="&#xE711;" Height="20"/>
+                                            </Button>
+                                        </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>

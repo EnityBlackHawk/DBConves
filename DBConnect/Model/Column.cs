@@ -9,7 +9,8 @@ namespace DBTelegraph.Model
 
     public enum Constraints
     {
-        PRIMARY_KEY
+        PRIMARY_KEY,
+        FOREIGN_KEY 
     }
 
     public class Column
@@ -21,13 +22,22 @@ namespace DBTelegraph.Model
 
         public Type Type { get; set; }
 
-        public Column(string name, Type type, params Constraints[] constraints)
+        public Column(string name, Type type, string? refCol = null, string? refTable = null, params Constraints[] constraints)
         {
             Name = name;
             Type = type;
             Constraints = new List<Constraints>(constraints);
+
+            ReferencesTable = refTable;
+            ReferecesColumn = refCol;
+
         }
 
+        public string? ReferecesColumn { get; set; }
+
+        public string? ReferencesTable { get; set; }
+
+        public bool IsForeignKey => Constraints.Contains(Model.Constraints.FOREIGN_KEY);
 
         public static implicit operator Type(Column column)
         {
