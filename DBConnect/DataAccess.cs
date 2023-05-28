@@ -145,11 +145,11 @@ namespace DBTelegraph
 
                 //conn.Query("CREATE DATABASE " + database);
                 SqlCommand command = new SqlCommand($"CREATE DATABASE {database}", conn);
-                //SqlParameter param = new();
-                //param.ParameterName = "@database";
-                //param.Value = (string)database;
+                SqlParameter param = new();
+                param.ParameterName = "@database";
+                param.Value = (string)database;
 
-                //command.Parameters.Add(param);
+                command.Parameters.Add(param);
                 command.Connection.Open();
                 command.ExecuteNonQuery();
             }

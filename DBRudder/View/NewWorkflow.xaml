@@ -8,7 +8,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:Model="using:DBRudder.Model"
 	mc:Ignorable="d"
-	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	Background="Transparent">
 
 
 	<Grid Padding="10" RowSpacing="10">
@@ -22,7 +22,7 @@
 		<TextBlock Text="Novo Workflow" Style="{StaticResource TitleTextBlockStyle}"/>
 		<ProgressRing x:DefaultBindMode="OneWay" Value="{x:Bind ViewModel.Progress}" IsActive="{x:Bind ViewModel.IsWorking}"
 						  VerticalAlignment="Center" HorizontalAlignment="Right" IsIndeterminate="True"/>
-		<FontIcon Glyph="&#xE73E;" Opacity="0" Foreground="Green" x:Name="checkMarkIcon"
+		<FontIcon Glyph="&#xE73E;" Opacity="0" Foreground="LightGreen" x:Name="checkMarkIcon"
 				  HorizontalAlignment="Right" FontSize="40">
 			<FontIcon.OpacityTransition>
 				<ScalarTransition Duration="0:0:0.25"/>
@@ -46,7 +46,8 @@
 		</Grid>
 		
 		<!-- Row 2 -->
-		<ListView Grid.Row="2" SelectionMode="None" ItemsSource="{x:Bind ViewModel.Actions}">
+		<ListView Grid.Row="2" SelectionMode="None" ItemsSource="{x:Bind ViewModel.Actions}"
+                  CanReorderItems="True" AllowDrop="True" CanDragItems="True">
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="Model:Action">
 					<Border Padding="10, 15, 10, 15" HorizontalAlignment="Stretch" Margin="0, 0, 0, 5" CornerRadius="5"

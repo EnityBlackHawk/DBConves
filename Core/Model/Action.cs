@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Core.Model
 {
+    public delegate void ActionEventHandler<TArgs>(Action sender, TArgs args);
+
+
     public abstract class Action
     {
         public abstract string Name { get; }
@@ -20,6 +23,7 @@ namespace Core.Model
         public Type? ResultArtifactType { get; protected set; }
 
         public event EventHandler<Model.ActionCompletedEventArgs>? ActionCompleted;
+        public event ActionEventHandler<Model.ActionSettupEventArgs>? ActionSettup;
 
         protected abstract void OnRun();
 
@@ -28,7 +32,13 @@ namespace Core.Model
             Methods.OnActionCreated(this, new ActionCreatedEventArgs(this));
         }
 
-        public virtual void Settup(params object[] args) { }
+        public virtual void Settup(params object[] args) {}
+
+        public virtual void ResetValues()
+        {
+            Status = null;
+            ActionSettup?.Invoke(this, new ActionSettupEventArgs());
+        }
 
         public async Task Run()
         {

@@ -8,12 +8,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Frame Content="{x:Bind Router.CurrentView, Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Frame.ContentTransitions>
-            <TransitionCollection>
-                <EntranceThemeTransition/>
-            </TransitionCollection>
-        </Frame.ContentTransitions>
-    </Frame>
+    <Grid>
+        <Image Source="https://images.wallpaperscraft.com/image/single/buildings_city_river_945303_1280x720.jpg"
+               Stretch="UniformToFill"/>
+        <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#AA444444">
+            <!--<Border.Background>
+                <AcrylicBrush TintColor="Black" TintLuminosityOpacity="0"
+                              TintOpacity="0.8"/>
+            </Border.Background>-->
+        </Border>
+        <Frame Content="{x:Bind Router.CurrentView, Mode=OneWay}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+    </Grid>
 
 </Window>

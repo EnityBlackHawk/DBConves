@@ -17,6 +17,7 @@
             <Converter:StringToInfoBarSeverityConverter x:Key="StringToInfoBarSeverityConverter"/>
             <Converter:BoolToIntConverter x:Key="BoolToIntConverter"/>
             <Converter:CoreResultToColorConverter x:Key="ResultToColorConverter"/>
+            <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush">#7A444444</SolidColorBrush>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

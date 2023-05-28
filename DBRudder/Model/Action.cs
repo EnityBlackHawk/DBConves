@@ -54,6 +54,15 @@ namespace DBRudder.Model
             CoreObject = coreObject;
             Result = coreObject.Status;
             coreObject.ActionCompleted += ExecutionCompleted;
+            coreObject.ActionSettup += SettupExecution;
+        }
+
+        private void SettupExecution(Core.Model.Action sender, Core.Model.ActionSettupEventArgs args)
+        {
+            App.GetDispatcherQueue().TryEnqueue(() =>
+            {
+                Result = sender.Status;
+            });
         }
 
         private void ExecutionCompleted(object sender, Core.Model.ActionCompletedEventArgs e)

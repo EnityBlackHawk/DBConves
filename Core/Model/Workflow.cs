@@ -20,13 +20,13 @@ namespace Core.Model
             get => _actions;
         }
 
-        private int _step;
+        private double _step;
 
 
         public string Name { get; }
-        private int _progression;
+        private double _progression;
 
-        public int Progression
+        public double Progression
         {
             get { return _progression; }
             set { _progression = value; OnPropertyChanged(); }
@@ -53,12 +53,17 @@ namespace Core.Model
         {
             await Task.Run(async () =>
             {
-                _step = 100 / _actions.Count;
+                _step = (100.0 / _actions.Count);
                 Progression = 0;
+
+                foreach(var action in _actions)
+                {
+                    action.ResetValues();
+                }
 
                 foreach (var action in _actions)
                 {
-                    //Thread.Sleep(5* 1000);
+                    
                     var m = action.GetType().GetMethod("Settup");
                     var p = m?.GetParameters();
                     if (p?[0] != null)

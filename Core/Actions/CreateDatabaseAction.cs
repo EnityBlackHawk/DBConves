@@ -25,6 +25,7 @@ namespace Core.Actions
 
         public override void Settup([ObjectInject(typeof(ConfigClass))]params object[] args)
         {
+            base.Settup(args);
             ConfigClass = (args[0] as ConfigClass);
         }
 

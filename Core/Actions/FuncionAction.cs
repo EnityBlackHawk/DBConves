@@ -21,6 +21,7 @@ namespace Core.Actions
 
         protected override void OnRun()
         {
+            Thread.Sleep(1000);
             System.Diagnostics.Debug.WriteLine(Message!);
             Status = new Model.Result("Done", "Success");
         }

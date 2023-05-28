@@ -25,9 +25,9 @@ namespace DBRudder.ViewModel
         public ButtonCommand<int> RemoveActionCommand { get; set; }
         public ConfigClass ConfigClass { get; set; }
 
-        private int _progress;
+        private double _progress;
 
-        public int Progress
+        public double Progress
         {
             get { return _progress; }
             set { _progress = value; OnPropertyChanged(); }
@@ -112,6 +112,9 @@ namespace DBRudder.ViewModel
         private Workflow wf;
         private async Task RunWorflow()
         {
+            if (Actions.Count == 0)
+                return;
+            Progress = 0;
             IsWorking = true;
             List<Core.Model.Action> actionsCORE = new List<Core.Model.Action>();
             foreach(var action in Actions)
